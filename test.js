@@ -6,4 +6,4 @@ class yeet
     }
 
 }
-YeetInstance = new yeet();
+yeetInst = new yeet();
