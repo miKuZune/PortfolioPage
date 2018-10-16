@@ -12,7 +12,8 @@ class Vector2 {
         }
     }
 
-    Set(vec) {
+    Set(vec)
+    {
         this.x = vec.x;
         this.y = vec.y;
     }
@@ -20,6 +21,11 @@ class Vector2 {
     Length()
     {
         return Math.sqrt((this.x*this.x) + (this.y*this.y));
+    }
+
+    Distance(vec)
+    {
+        return Math.sqrt(Math.pow(this.x - vec.x,2) + Math.pow(this.y - vec.y,2));
     }
 
     Normalize()
@@ -39,5 +45,4 @@ class Vector2 {
     {
         return "" + this.x.toFixed(2) + ":" + this.y.toFixed(2);
     }
-
 }
