@@ -10,19 +10,30 @@ class BoidGame
         //Calculates the middle of the browser and puts the playable area there.
         areaStartPos = (window.innerWidth / 2) - (areaSize / 2);
 
-        //Create a moving gameobject
-        var vec = new Vector2(10,10);
-        MovingGameOBJ = new GameObject(new Vector2(areaStartPos,15), vec);
-
         //Create a list of gameobjects
         var numOfGameObjects = 3;
+        //Define these variables as arrays.
         GameObjList = [new GameObject(null,null)];
+        BoidList = [new Boid()];
 
         for(var i = 0; i < numOfGameObjects; i++)
         {
             GameObjList[i] = (new GameObject(new Vector2(areaStartPos + ((i + 1) * 70), Math.random() * 15), new Vector2(10,10)));
         }
+
+        //Create the player
+        var playerSize = new Vector2(40,40);
+        var playerPos = new Vector2(areaStartPos + (areaSize / 2), areaSize - playerSize.y - 10);
+
+        PlayerObj = new GameObject(playerPos, playerSize);
+
+
+        //Add boids
+        BoidManagerInst.CreateBoids();
+
     }
+
+
 
     Run()
     {
@@ -42,35 +53,121 @@ class BoidGame
             ctx.fillStyle = 'rgba(255,255,255,255)';
             ctx.fillRect(areaStartPos,0,this.areaSize,this.areaSize);
 
-            MovingGameOBJ.Translate(new Vector2(1,0));
+
+            //Handle the boids
+            for(var i = 0; i < BoidList.length; i++)
+            {
+                BoidList[i].Flock();
+                if(i == 6)
+                {
+                    //console.log(BoidList[i].Avoid());
+                }
+            }
 
             //Draw the list of game objects
             ctx.fillStyle = 'rgba(0,255,0,255)';
+
             for(var i = 0; i < GameObjList.length; i++)
             {
                 ctx.fillRect(GameObjList[i].position.x, GameObjList[i].position.y, GameObjList[i].size.x, GameObjList[i].size.y);
             }
+            //Draw the player.
+            PlayerObj.Translate(new Vector2(playerX_Vel,0));
 
-            ctx.fillStyle = 'rgba(0,255,0,255)';
-            ctx.fillRect(MovingGameOBJ.position.x, MovingGameOBJ.position.y, MovingGameOBJ.size.x,MovingGameOBJ.size.y);
+            ctx.fillStyle = 'rgba(218,146,229,255)';
+            ctx.fillRect(PlayerObj.position.x, PlayerObj.position.y, PlayerObj.size.x, PlayerObj.size.y);
 
-            //Checks if the moving gameobject has collided with anything.
+            //Checks colliders
             for(var i = 0; i < GameObjList.length; i++)
             {
-                if(MovingGameOBJ.Collided(GameObjList[i]))
+
+            }
+
+            //Change swarm goal pos
+            if(Math.random() * 500 <= 1)
+            {
+                BoidManagerInst.ChangeGoalPos();
+            }
+
+            //Validation
+
+            //Check if Gameobject exceeds play area
+
+
+            for(var i = 0; i < GameObjList.length; i++)
+            {
+                if(GameObjList[i].position.x > areaStartPos + areaSize - GameObjList[i].size.x)
                 {
-                    console.log("Colliding with " + GameObjList[i]);
+                    GameObjList[i].position.x = areaStartPos + areaSize - GameObjList[i].size.x;
+                }
+                if(GameObjList[i].position.x < areaStartPos)
+                {
+                    GameObjList[i].position.x = areaStartPos;
+                }
+
+                if(GameObjList[i].position.y > areaSize - GameObjList[i].size.y)
+                {
+                    GameObjList[i].position.y = areaSize - GameObjList[i].size.y;
+                }
+                if(GameObjList[i].position.y < 0)
+                {
+                    GameObjList[i].position.y = 0;
                 }
             }
 
 
+
+            window.addEventListener("keypress",onKeyDown);
+            window.addEventListener("keyup", onKeyUp);
+
         }, 17);
     }
 }
+
+
 BoidGameInst = new BoidGame();
 //Global variables - accessible at any point through-out any script.
 var areaSize;
 var areaStartPos;
 
-var MovingGameOBJ;
+var PlayerObj;
 var GameObjList;
+var BoidList;
+
+var moveSpeed = 5;
+var playerX_Vel = 0;
+
+var keysPressed = 0;
+
+//Probably shouldn't set this to more than like 2500
+var startBoidNum = 300;
+
+function onKeyDown(e)
+{
+    if(e.key == 'a')
+    {
+        playerX_Vel = -moveSpeed;
+        keysPressed++;
+    }else if(e.key == 'd')
+    {
+        playerX_Vel = moveSpeed;
+        keysPressed++;
+    }
+
+}
+
+function onKeyUp(e)
+{
+    if(e.key == 'a' || e.key == 'd')
+    {
+        keysPressed--;
+    }
+
+    if(keysPressed >= 2){keysPressed = 0;}
+    else if(keysPressed < 0){keysPressed = 0;}
+
+    if(keysPressed == 0)
+    {
+        playerX_Vel = 0;
+    }
+}

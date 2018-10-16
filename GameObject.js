@@ -12,6 +12,7 @@ class GameObject
         this.position.y = this.position.y + vec2.y;
     }
 
+
     Collided(Obj)
     {
         var xPosMin = this.position.x; //X Pos closest to the left side of the screen.
@@ -36,6 +37,9 @@ class GameObject
 
         return false;
     }
+}
 
-
+function xd()
+{
+    console.log("xd");
 }
