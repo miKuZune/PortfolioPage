@@ -60,7 +60,7 @@ class BoidGame
                 BoidList[i].Flock();
                 if(i == 6)
                 {
-                    //console.log(BoidList[i].Avoid());
+                    console.log(BoidList[i].velocity);
                 }
             }
 
@@ -69,6 +69,9 @@ class BoidGame
 
             for(var i = 0; i < GameObjList.length; i++)
             {
+				if(i == 6){ctx.fillStyle = 'rgba(255,0,0,255)';}
+				else{ctx.fillStyle = 'rgba(0,255,0,255)';}
+				
                 ctx.fillRect(GameObjList[i].position.x, GameObjList[i].position.y, GameObjList[i].size.x, GameObjList[i].size.y);
             }
             //Draw the player.
@@ -141,6 +144,11 @@ var keysPressed = 0;
 
 //Probably shouldn't set this to more than like 2500
 var startBoidNum = 300;
+
+var goalWeight = 2;
+var aliWeight = 1;
+var cohWeight = 1;
+var avoWeight = 3;
 
 function onKeyDown(e)
 {
