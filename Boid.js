@@ -6,7 +6,7 @@ class Boid
         this.velocity = new Vector2(Math.random(),Math.random());
 
         this.neighbourDist = 250;
-        this.moveSpeed = (Math.random() * 2) + 2;
+        this.moveSpeed = (Math.random() * 6) + 3;
     }
 
     MoveByVelocity()
@@ -100,7 +100,7 @@ class Boid
             if(BoidList[i].owner != this.owner)
             {
                 var d = this.owner.position.Distance(BoidList[i].owner.position);
-                if(d < 150)
+                if(d < this.neighbourDist * 0.6)
                 {
                     sum.x = sum.x + (this.owner.position.x - BoidList[i].owner.position.x);
                     sum.y = sum.y + (this.owner.position.y - BoidList[i].owner.position.y);
@@ -122,26 +122,21 @@ class Boid
 
     Flock()
     {
-        if(Math.random() * 50 <= 10)
+        if(Math.random() * 15 <= 1)
         {
             var ali = this.Align();
             var coh = this.Cohesion();
             var avo = this.Avoid();
             var goalSeeked = this.Seek(BoidManagerInst.goal);
 
+            goalSeeked.Normalize();
+
             this.velocity.x = (goalSeeked.x * goalWeight) + (ali.x * aliWeight)  + (coh.x * cohWeight) + (avo.x * avoWeight);
             this.velocity.y = (goalSeeked.y* goalWeight) + (ali.y * aliWeight) + (coh.y * cohWeight) + (avo.y * avoWeight) ;
-            this.velocity.Normalize();
-        }else if(Math.random() * 80 <= 1)
-        {
-            //this.velocity = this.Avoid();
         }
+
         this.velocity.Normalize();
 
-
-        this.velocity.x *= this.moveSpeed;
-        this.velocity.y *= this.moveSpeed;
-
-        this.MoveByVelocity();
+        this.owner.AddForce(this.velocity, this.moveSpeed);
     }
 }

@@ -18,7 +18,7 @@ class BoidGame
 
         for(var i = 0; i < numOfGameObjects; i++)
         {
-            GameObjList[i] = (new GameObject(new Vector2(areaStartPos + ((i + 1) * 70), Math.random() * 15), new Vector2(10,10)));
+            GameObjList[i] = (new GameObject(new Vector2(areaStartPos + Math.random() *  areaSize, Math.random() * areaSize), new Vector2(10,10)));
         }
 
         //Create the player
@@ -54,15 +54,21 @@ class BoidGame
             ctx.fillRect(areaStartPos,0,this.areaSize,this.areaSize);
 
 
-            //Handle the boids
-            for(var i = 0; i < BoidList.length; i++)
+            if(startBoidNum != 0)
             {
-                BoidList[i].Flock();
-                if(i == 6)
+                //Handle the boids
+                for(var i = 0; i < BoidList.length; i++)
                 {
-                    console.log(BoidList[i].velocity);
+
+                    BoidList[i].Flock();
+                    BoidList[i].owner.MoveWithVelocity();
+                    if(i == 6)
+                    {
+                        console.log(BoidList[i].velocity);
+                    }
                 }
             }
+
 
             //Draw the list of game objects
             ctx.fillStyle = 'rgba(0,255,0,255)';
@@ -86,15 +92,16 @@ class BoidGame
 
             }
 
-            //Change swarm goal pos
-            if(Math.random() * 500 <= 1)
+            //Change swarm goal pos randomly
+            if(Math.random() * 100 <= 1)
             {
                 BoidManagerInst.ChangeGoalPos();
             }
 
+
             //Validation
 
-            //Check if Gameobject exceeds play area
+            //Check if Gameobjects exceeds play area
 
 
             for(var i = 0; i < GameObjList.length; i++)
@@ -145,10 +152,10 @@ var keysPressed = 0;
 //Probably shouldn't set this to more than like 2500
 var startBoidNum = 300;
 
-var goalWeight = 2;
+var goalWeight = 3;
 var aliWeight = 1;
-var cohWeight = 1;
-var avoWeight = 3;
+var cohWeight = 2;
+var avoWeight = 2;
 
 function onKeyDown(e)
 {
@@ -160,6 +167,21 @@ function onKeyDown(e)
     {
         playerX_Vel = moveSpeed;
         keysPressed++;
+    }
+
+    if(e.key == 'q')
+    {
+        for(var i = 0; i < 3; i++)
+        {
+            var targetDir = new Vector2(GameObjList[i].position.x - BoidManagerInst.goal.x, GameObjList[i].position.y - BoidManagerInst.goal.y);
+
+            targetDir.Normalize();
+
+            targetDir.x = -targetDir.x;
+            targetDir.y = -targetDir.y;
+
+            GameObjList[i].AddForce(targetDir);
+        }
     }
 
 }

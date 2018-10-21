@@ -4,6 +4,8 @@ class GameObject
     {
         this.position = position;
         this.size = size;
+
+        this.velocity = new Vector2(0,0);
     }
 
     Translate(vec2)
@@ -11,6 +13,29 @@ class GameObject
         this.position.x = this.position.x +  vec2.x;
         this.position.y = this.position.y + vec2.y;
     }
+
+    AddForce(force, maxMoveSpeed)
+    {
+        this.velocity.x += force.x;
+        this.velocity.y += force.y;
+
+        if(this.velocity.Length() >= maxMoveSpeed)
+        {
+            this.velocity.x /= maxMoveSpeed;
+            this.velocity.y /= maxMoveSpeed;
+
+        }
+
+    }
+
+
+    MoveWithVelocity()
+    {
+        this.position.x += this.velocity.x;
+        this.position.y += this.velocity.y;
+        //console.log("hi");
+    }
+
 
 
     Collided(Obj)
@@ -37,9 +62,4 @@ class GameObject
 
         return false;
     }
-}
-
-function xd()
-{
-    console.log("xd");
 }

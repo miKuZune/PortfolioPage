@@ -36,6 +36,16 @@ class Vector2 {
         this.y/= length;
     }
 
+    static RotateTowards(currDir, targetDir, step)
+    {
+        var newDir = new Vector2(0,0);
+
+        newDir.x = currDir.x + (targetDir.x * step);
+        newDir.y = currDir.y + (targetDir.y * step);
+
+        return newDir;
+    }
+
     static Dot(v0,v1)
     {
         return (v0.x * v1.x) + (v0.y * v1.y);
