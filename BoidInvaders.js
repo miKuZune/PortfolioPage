@@ -64,7 +64,7 @@ class BoidGame
                     BoidList[i].owner.MoveWithVelocity();
                     if(i == 6)
                     {
-                        console.log(BoidList[i].velocity);
+                        //console.log(BoidList[i].velocity);
                     }
                 }
             }
