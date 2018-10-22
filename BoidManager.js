@@ -30,7 +30,7 @@ class BoidManager
     ChangeGoalPos()
     {
         this.goal = new Vector2((Math.random() * areaSize) + areaStartPos, Math.random() * areaSize );
-        console.log("new goal");
+        console.log("new goal: " + this.goal);
     }
 
 }
