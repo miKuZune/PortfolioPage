@@ -10,16 +10,9 @@ class BoidGame
         //Calculates the middle of the browser and puts the playable area there.
         areaStartPos = (window.innerWidth / 2) - (areaSize / 2);
 
-        //Create a list of gameobjects
-        var numOfGameObjects = 3;
         //Define these variables as arrays.
         GameObjList = [];
         BoidList = [new Boid()];
-
-        /*for(var i = 0; i < numOfGameObjects; i++)
-        {
-            GameObjList[i] = (new GameObject(new Vector2(areaStartPos + Math.random() *  areaSize, Math.random() * areaSize), new Vector2(10,10)));
-        }*/
 
         //Create the player
         var playerSize = new Vector2(40,40);
@@ -27,9 +20,31 @@ class BoidGame
 
         PlayerObj = new GameObject(playerPos, playerSize);
 
-
         //Add Boids
         BoidManagerInst.CreateBoids();
+    }
+
+    CreateBullet(vec)
+    {
+        //Create a gameobject to be used in rendering and collision.
+        var BulletOBJ = new GameObject(new Vector2(vec.x, vec.y), new Vector2(10,20), "Bullet");
+        BulletOBJ.velocity = new Vector2(0,-5);
+
+        //Check if the list of bullets has been created yet.
+        if(BulletList == undefined)
+        {
+            //If not create the list with a singular new bullet
+            BulletList = [new Bullet(BulletOBJ)];
+            GameObjList[GameObjList.length] = BulletList[0].obj;
+        }else{
+            //Otherwise just add a new bullet to the list.
+            BulletList[BulletList.length] = new Bullet(BulletOBJ);
+            GameObjList[GameObjList.length] = BulletList[BulletList.length - 1].obj;
+        }
+
+
+        BulletList[BulletList.length] = new Bullet(BulletOBJ);
+        GameObjList[GameObjList.length] = BulletList[BulletList.length - 1].obj;
     }
 
 
@@ -37,7 +52,6 @@ class BoidGame
     Run()
     {
         this.Init();
-
 		//Operates as the game loop
 		//Is called every 17 milliseconds.
 		//Which means this renders at around 60 frames a second.
@@ -65,12 +79,47 @@ class BoidGame
                     BoidList[i].owner.MoveWithVelocity();
                 }
             }
+            //Move the bullets by their velocity.
+            if(BulletList != undefined)
+            {
+                for(var i = 0; i < BulletList.length; i++)
+                {
+                    BulletList[i].obj.MoveWithVelocity();
+                }
+            }
+
+
+
 
             //Checks colliders
-            for(var i = 0; i < GameObjList.length; i++)
+            if(BulletList != undefined)
             {
-
+                //Go through each rendered gameobject.
+                for(var i = 0; i < GameObjList.length; i++)
+                {
+                    //Go through the bullets.
+                    for(var j = 0; j < BulletList.length; j++)
+                    {
+                        //Check if the bullets have collided with objects that are not themselves or other bullets.
+                        if(BulletList[j].obj.Collided(GameObjList[i]) && GameObjList[i] != BulletList[j].obj && GameObjList[i].tag != "Bullet")
+                        {
+                            //Goes through and finds the position of the bullet in the rendering array.
+                            for(var k = 0; k < GameObjList.length; k++)
+                            {
+                                if(GameObjList[k] == BulletList[j].obj)
+                                {
+                                    //Remove the Bullet from the Rendering list and from the bullet list.
+                                    GameObjList.splice(k,1);
+                                    BulletList.splice(j,1);
+                                    //Remove the Boid from rendering list.
+                                    GameObjList.splice(i,1);
+                                }
+                            }
+                        }
+                    }
+                }
             }
+
 
             //Change swarm goal pos randomly
             if(Math.random() * 100 <= 1)
@@ -83,9 +132,9 @@ class BoidGame
 
             //Check if Gameobjects exceeds play area
 			//Sets them to be within the play area if they have left it.
-
             for(var i = 0; i < GameObjList.length; i++)
             {
+
 				//Check if they have gone beyond the right side of the play area.
                 if(GameObjList[i].position.x > areaStartPos + areaSize - GameObjList[i].size.x)
                 {
@@ -107,6 +156,7 @@ class BoidGame
                 if(GameObjList[i].position.y < 0)
                 {
                     GameObjList[i].position.y = 0;
+                    if(GameObjList[i].tag == "Bullet"){GameObjList.splice(i,1);}
                 }
             }
 			
@@ -117,10 +167,12 @@ class BoidGame
             ctx.fillStyle = 'rgba(0,255,0,255)';
 
             for(var i = 0; i < GameObjList.length; i++)
-            {				
+            {
+                if(GameObjList[i].tag == "Bullet"){ctx.fillStyle = 'rgba(255,0,0,255)';}
+                else{ctx.fillStyle = 'rgba(0,255,0,255)';}
+
                 ctx.fillRect(GameObjList[i].position.x, GameObjList[i].position.y, GameObjList[i].size.x, GameObjList[i].size.y);
             }
-			
 			//Handle player movement based on current inputs
 			if(aDown)
 			{
@@ -141,24 +193,32 @@ class BoidGame
             window.addEventListener("keypress",onKeyDown);
             window.addEventListener("keyup", onKeyUp);
 
+            bulletCD -= 0.17;
         }, 17);
+    }
+
+    Hello()
+    {
+        console.log("hiya");
     }
 }
 
 
 BoidGameInst = new BoidGame();
-//Global variables - accessible at any point through-out any script.
+//Global variables - accessible at any point from any script.
 var areaSize;
 var areaStartPos;
 
 var PlayerObj;
 var GameObjList;
 var BoidList;
+var BulletList;
 
 var moveSpeed = 5;
 var playerX_Vel = 0;
 
-var keysPressed = 0;
+var bulletCD = 0;
+
 
 //Probably shouldn't set this to more than like 2500
 var startBoidNum = 300;
@@ -172,6 +232,7 @@ var avoWeight = 2.5;
 
 var aDown = false;
 var dDown = false;
+var spaceDown = false;
 
 function onKeyDown(e)
 {
@@ -182,7 +243,18 @@ function onKeyDown(e)
     {
         dDown = true;
     }
+
+    if(e.key == ' ')
+    {
+        if(bulletCD <= 0)
+        {
+            BoidGameInst.CreateBullet(new Vector2(PlayerObj.position.x + (PlayerObj.size.x / 2), 600));
+            bulletCD = 0.5;
+        }
+    }
 }
+
+
 
 function onKeyUp(e)
 {
@@ -195,4 +267,9 @@ function onKeyUp(e)
 	{
 		dDown = false;
 	}
+
+    if(e.key == ' ')
+    {
+        spaceDown = false;
+    }
 }

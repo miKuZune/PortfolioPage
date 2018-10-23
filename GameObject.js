@@ -1,11 +1,13 @@
 class GameObject
 {
-    constructor(position, size)
+    constructor(position, size, tag)
     {
         this.position = position;
         this.size = size;
 
         this.velocity = new Vector2(0,0);
+
+        this.tag = tag;
     }
 
     Translate(vec2)
@@ -33,7 +35,6 @@ class GameObject
     {
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
-        //console.log("hi");
     }
 
 
