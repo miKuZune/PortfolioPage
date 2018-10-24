@@ -10,6 +10,12 @@ class BoidGame
         //Calculates the middle of the browser and puts the playable area there.
         areaStartPos = (window.innerWidth / 2) - (areaSize / 2);
 
+
+        this.gameState = "end";
+
+        this.score = 0;
+        this.scorePerKill = 10;
+
         //Define these variables as arrays.
         GameObjList = [];
         BoidList = [new Boid()];
@@ -20,8 +26,7 @@ class BoidGame
 
         PlayerObj = new GameObject(playerPos, playerSize);
 
-        //Add Boids
-        BoidManagerInst.CreateBoids();
+
     }
 
     CreateBullet(vec)
@@ -47,11 +52,206 @@ class BoidGame
         GameObjList[GameObjList.length] = BulletList[BulletList.length - 1].obj;
     }
 
+    Start(ctx)
+    {
+        ctx.font = "40px Consolas";
+        ctx.fillStyle = "black";
+        ctx.textAlign = "center";
+        ctx.fillText("Boid Invaders", areaStartPos + (areaSize / 2),areaSize * 0.1);
+
+        ctx.textAlign= "left";
+        ctx.font = "25px Consolas";
+        ctx.fillText("Controls:", areaStartPos + (areaSize * 0.35),areaSize * 0.3);
+
+        ctx.font = "20px Consolas";
+        ctx.fillText("A/D - move left and right", areaStartPos + (areaSize * 0.38),areaSize * 0.4);
+
+        ctx.fillText("Spacebar - shoot", areaStartPos + (areaSize * 0.38),areaSize * 0.48);
+
+        ctx.fillText("Press Spacebar to start", areaStartPos + (areaSize * 0.35),areaSize * 0.9);
+
+        if(spaceDown)
+        {
+            this.gameState = "play";
+            spaceDown = false;
+            this.score = 0;
+
+            //Add Boids
+            BoidManagerInst.CreateBoids();
+        }
+
+        window.addEventListener("keypress",onKeyDown);
+    }
+
+    Play(ctx)
+    {
+        if(startBoidNum != 0)
+        {
+            //Handle the boids
+            for(var i = 0; i < BoidList.length; i++)
+            {
+                BoidList[i].Flock();
+                BoidList[i].owner.MoveWithVelocity();
+            }
+        }
+        //Move the bullets by their velocity.
+        if(BulletList != undefined)
+        {
+            for(var i = 0; i < BulletList.length; i++)
+            {
+                BulletList[i].obj.MoveWithVelocity();
+            }
+        }
+
+
+
+
+        //Checks colliders
+        if(BulletList != undefined)
+        {
+            //Go through each rendered gameobject.
+            for(var i = 0; i < GameObjList.length; i++)
+            {
+                //Go through the bullets.
+                for(var j = 0; j < BulletList.length; j++)
+                {
+                    //Check if the bullets have collided with objects that are not themselves or other bullets.
+                    if(BulletList[j].obj.Collided(GameObjList[i]) && GameObjList[i] != BulletList[j].obj && GameObjList[i].tag != "Bullet")
+                    {
+                        //Goes through and finds the position of the bullet in the rendering array.
+                        for(var k = 0; k < GameObjList.length; k++)
+                        {
+                            if(GameObjList[k] == BulletList[j].obj)
+                            {
+                                //Remove the Bullet from the Rendering list and from the bullet list.
+                                GameObjList.splice(k,1);
+                                BulletList.splice(j,1);
+                                //Remove the Boid from rendering list.
+                                GameObjList.splice(i,1);
+
+                                this.score += this.scorePerKill;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        //Change swarm goal pos randomly
+        if(Math.random() * 100 <= 1)
+        {
+            BoidManagerInst.ChangeGoalPos();
+        }
+
+
+        //Validation
+
+        //Check if Gameobjects exceeds play area
+        //Sets them to be within the play area if they have left it.
+        for(var i = 0; i < GameObjList.length; i++)
+        {
+
+            //Check if they have gone beyond the right side of the play area.
+            if(GameObjList[i].position.x > areaStartPos + areaSize - GameObjList[i].size.x)
+            {
+                GameObjList[i].position.x = areaStartPos + areaSize - GameObjList[i].size.x;
+            }
+            //Check if they have gone beyond the left side of the play area.
+            if(GameObjList[i].position.x < areaStartPos)
+            {
+                GameObjList[i].position.x = areaStartPos;
+            }
+            //Check if they have gone beneath the play area.
+            //By using times 0.8 we give the player and the agents their own separate zones within the play area.
+            //This will ensure that the play is never struggling to shoot an enemy because it has gone beneath him and they can't shoot down at them.
+            if(GameObjList[i].position.y > areaSize * 0.8)
+            {
+                GameObjList[i].position.y = areaSize * 0.8;
+            }
+            //Check if they have gone above the play area.
+            if(GameObjList[i].position.y < 0)
+            {
+                GameObjList[i].position.y = 0;
+                if(GameObjList[i].tag == "Bullet"){GameObjList.splice(i,1);}
+            }
+        }
+
+
+
+        //Draw the list of game objects
+        //Needs to be called last so that any changes made to positions (such as keeping them inside the play area) will be drawn as applied.
+        ctx.fillStyle = 'rgba(0,255,0,255)';
+
+        for(var i = 0; i < GameObjList.length; i++)
+        {
+            if(GameObjList[i].tag == "Bullet"){ctx.fillStyle = 'rgba(255,0,0,255)';}
+            else{ctx.fillStyle = 'rgba(0,255,0,255)';}
+
+            ctx.fillRect(GameObjList[i].position.x, GameObjList[i].position.y, GameObjList[i].size.x, GameObjList[i].size.y);
+        }
+        //Draw UI
+        ctx.font = "20px Consolas";
+        ctx.fillStyle = "black";
+        ctx.fillText("Score: " + this.score, areaStartPos,20);
+
+        //Handle player movement based on current inputs
+        if(aDown)
+        {
+            playerX_Vel = -moveSpeed;
+        }else if(dDown)
+        {
+            playerX_Vel = moveSpeed;
+        }else
+        {
+            playerX_Vel = 0;
+        }
+        //Draw the player.
+        PlayerObj.Translate(new Vector2(playerX_Vel,0));
+
+
+        //Check for end game state
+        if(this.score / 10 >= startBoidNum)
+        {
+            this.gameState = "end";
+        }
+
+        ctx.fillStyle = 'rgba(218,146,229,255)';
+        ctx.fillRect(PlayerObj.position.x, PlayerObj.position.y, PlayerObj.size.x, PlayerObj.size.y);
+
+        window.addEventListener("keypress",onKeyDown);
+        window.addEventListener("keyup", onKeyUp);
+
+        bulletCD -= 0.17;
+    }
+
+    End(ctx)
+    {
+        ctx.font = "40px Consolas";
+        ctx.fillStyle = "black";
+        ctx.textAlign = "center";
+        ctx.fillText("GAME OVER!" ,(areaStartPos + areaSize/2), areaSize * 0.3 );
+
+        ctx.font = "25px Consolas";
+        ctx.fillText("Your score: " + this.score, (areaStartPos + areaSize/2), areaSize * 0.5);
+
+        ctx.fillText("Press Space to continue", (areaStartPos + areaSize/2), areaSize * 0.9);
+
+        if(spaceDown)
+        {
+            this.gameState = "start";
+            spaceDown = false;
+        }
+
+        window.addEventListener("keypress",onKeyDown);
+    }
+
 
 
     Run()
     {
         this.Init();
+
 		//Operates as the game loop
 		//Is called every 17 milliseconds.
 		//Which means this renders at around 60 frames a second.
@@ -69,137 +269,20 @@ class BoidGame
             ctx.fillStyle = 'rgba(255,255,255,255)';
             ctx.fillRect(areaStartPos,0,this.areaSize,this.areaSize);
 
-
-            if(startBoidNum != 0)
+            switch(BoidGameInst.gameState)
             {
-                //Handle the boids
-                for(var i = 0; i < BoidList.length; i++)
-                {
-                    BoidList[i].Flock();
-                    BoidList[i].owner.MoveWithVelocity();
-                }
-            }
-            //Move the bullets by their velocity.
-            if(BulletList != undefined)
-            {
-                for(var i = 0; i < BulletList.length; i++)
-                {
-                    BulletList[i].obj.MoveWithVelocity();
-                }
+                case "start":
+                        BoidGameInst.Start(ctx);
+                    break;
+                case "play":
+                        BoidGameInst.Play(ctx);
+                    break;
+                case"end":
+                        BoidGameInst.End(ctx);
+                    break;
             }
 
-
-
-
-            //Checks colliders
-            if(BulletList != undefined)
-            {
-                //Go through each rendered gameobject.
-                for(var i = 0; i < GameObjList.length; i++)
-                {
-                    //Go through the bullets.
-                    for(var j = 0; j < BulletList.length; j++)
-                    {
-                        //Check if the bullets have collided with objects that are not themselves or other bullets.
-                        if(BulletList[j].obj.Collided(GameObjList[i]) && GameObjList[i] != BulletList[j].obj && GameObjList[i].tag != "Bullet")
-                        {
-                            //Goes through and finds the position of the bullet in the rendering array.
-                            for(var k = 0; k < GameObjList.length; k++)
-                            {
-                                if(GameObjList[k] == BulletList[j].obj)
-                                {
-                                    //Remove the Bullet from the Rendering list and from the bullet list.
-                                    GameObjList.splice(k,1);
-                                    BulletList.splice(j,1);
-                                    //Remove the Boid from rendering list.
-                                    GameObjList.splice(i,1);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-
-            //Change swarm goal pos randomly
-            if(Math.random() * 100 <= 1)
-            {
-                BoidManagerInst.ChangeGoalPos();
-            }
-
-
-            //Validation
-
-            //Check if Gameobjects exceeds play area
-			//Sets them to be within the play area if they have left it.
-            for(var i = 0; i < GameObjList.length; i++)
-            {
-
-				//Check if they have gone beyond the right side of the play area.
-                if(GameObjList[i].position.x > areaStartPos + areaSize - GameObjList[i].size.x)
-                {
-                    GameObjList[i].position.x = areaStartPos + areaSize - GameObjList[i].size.x;
-                }
-				//Check if they have gone beyond the left side of the play area.
-                if(GameObjList[i].position.x < areaStartPos)
-                {
-                    GameObjList[i].position.x = areaStartPos;
-                }
-				//Check if they have gone beneath the play area.
-				//By using times 0.8 we give the player and the agents their own separate zones within the play area.
-				//This will ensure that the play is never struggling to shoot an enemy because it has gone beneath him and they can't shoot down at them.
-                if(GameObjList[i].position.y > areaSize * 0.8)
-                {
-                    GameObjList[i].position.y = areaSize * 0.8;
-                }
-				//Check if they have gone above the play area.
-                if(GameObjList[i].position.y < 0)
-                {
-                    GameObjList[i].position.y = 0;
-                    if(GameObjList[i].tag == "Bullet"){GameObjList.splice(i,1);}
-                }
-            }
-			
-			
-			
-			//Draw the list of game objects
-			//Needs to be called last so that any changes made to positions (such as keeping them inside the play area) will be drawn as applied.
-            ctx.fillStyle = 'rgba(0,255,0,255)';
-
-            for(var i = 0; i < GameObjList.length; i++)
-            {
-                if(GameObjList[i].tag == "Bullet"){ctx.fillStyle = 'rgba(255,0,0,255)';}
-                else{ctx.fillStyle = 'rgba(0,255,0,255)';}
-
-                ctx.fillRect(GameObjList[i].position.x, GameObjList[i].position.y, GameObjList[i].size.x, GameObjList[i].size.y);
-            }
-			//Handle player movement based on current inputs
-			if(aDown)
-			{
-				playerX_Vel = -moveSpeed;
-			}else if(dDown)
-			{
-				playerX_Vel = moveSpeed;
-			}else
-			{
-				playerX_Vel = 0;
-			}
-            //Draw the player.
-            PlayerObj.Translate(new Vector2(playerX_Vel,0));
-
-            ctx.fillStyle = 'rgba(218,146,229,255)';
-            ctx.fillRect(PlayerObj.position.x, PlayerObj.position.y, PlayerObj.size.x, PlayerObj.size.y);
-
-            window.addEventListener("keypress",onKeyDown);
-            window.addEventListener("keyup", onKeyUp);
-
-            bulletCD -= 0.17;
         }, 17);
-    }
-
-    Hello()
-    {
-        console.log("hiya");
     }
 }
 
@@ -246,6 +329,7 @@ function onKeyDown(e)
 
     if(e.key == ' ')
     {
+        spaceDown = true;
         if(bulletCD <= 0)
         {
             BoidGameInst.CreateBullet(new Vector2(PlayerObj.position.x + (PlayerObj.size.x / 2), 600));
