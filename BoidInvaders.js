@@ -304,7 +304,7 @@ var bulletCD = 0;
 
 
 //Probably shouldn't set this to more than like 2500
-var startBoidNum = 300;
+var startBoidNum = 150;
 
 var goalWeight = 3;
 var aliWeight = 1;
