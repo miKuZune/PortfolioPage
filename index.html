@@ -1,32 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Boid Invaders</title>
-    <script src="test.js"></script>
-    <script src="BoidInvaders.js"></script>
-    <script src="GameObject.js"></script>
-    <script src="Vector2.js"></script>
-    <script src="BoidManager.js"></script>
-    <script src="Boid.js"></script>
-    <script src ="Bullet.js"></script>
-</head>
-<body>
 
-    <canvas id="canvas"></canvas>
+  <head>
 
-</body>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-<script>
-    //
-    //GARETH:   This is some boilerplate code that will hide screen edges on the
-    //          browser
-    //
-    document.documentElement.style.overflow = 'hidden';  // firefox, chrome
-    document.body.scroll = "no"; // ie only
-    document.body.style.padding = 0;
-    document.body.style.margin = 0;
+    <title>Max Farley - Portfolio</title>
 
-    BoidGameInst.Run();
-</script>
+    <!-- Bootstrap Core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/stylish-portfolio.min.css" rel="stylesheet">
+
+  </head>
+
+  <body id="page-top">
+
+    <!-- Navigation -->
+    <a class="menu-toggle rounded" href="#">
+      <i class="fas fa-bars"></i>
+    </a>
+    <nav id="sidebar-wrapper">
+      <ul class="sidebar-nav">
+        <li class="sidebar-brand">
+          <a class="js-scroll-trigger" href="#page-top">Start Bootstrap</a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a class="js-scroll-trigger" href="#page-top">Home</a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a class="js-scroll-trigger" href="#about">About</a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a class="js-scroll-trigger" href="#portfolio">Portfolio</a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a class="js-scroll-trigger" href="#contact">Contact</a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Header -->
+    <header class="masthead d-flex">
+      <div class="container">
+        <h1 class="mb-1">Max Farley</h1>
+        <h3 class="mb-5">
+          <em>Artificial Intelligence and Gameplay programmer.</em>
+        </h3>
+      </div>
+      <div class="overlay"></div>
+    </header>
+
+    <!-- About -->
+    <section class="content-section bg-light" id="about">
+      <div class="container text-center">
+        <div class="row">
+          <div class="col-lg-10 mx-auto">
+            <h2>Hi my names Max. I'm a programmer mainly focusing on creating Game-play and Artificial Intelligence for games.</h2>
+            <p class="lead mb-5">I'm currently a student at Falmouth University studying Computing for Games.
+              During which time I've gained experience working in both Unity and Unreal's game engines.
+              I've also worked with a variety of programming languages such as C#, C++, Java and Javascript, and also have some experience with languages like HTML and Assembly.
+              I am a keen student and hard-worker, constantly looking to learn and to better my understanding of everything around me.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Portfolio -->
+    <section class="content-section" id="portfolio">
+      <div class="container">
+        <div class="content-section-heading text-center">
+          <h3 class="text-secondary mb-0">Portfolio</h3>
+          <h2 class="mb-5">A selection of my Projects</h2>
+        </div>
+        <div class="row no-gutters">
+          <div class="col-lg-6">
+            <a class="portfolio-item" href="BoidInvaders/BoidIndex.html">
+              <span class="caption">
+                <span class="caption-content">
+                  <h2>Boid Invaders</h2>
+                  <p class="mb-0">2D flocking behaviours mixed with a game of space invaders.</p>
+                </span>
+              </span>
+              <img class="img-fluid" src="Images/BoidInvaders.PNG" alt="">
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="content-section bg-primary text-white" id="contact">
+      <div class="container text-center">
+        <h2 class="mb-4">I hope you've enjoyed your time here! Please feel free to contact me using any of the below information.</h2>
+      </div>
+    </section>
+
+
+    <!-- Footer -->
+    <footer class="footer text-center">
+      <div class="container">
+        <ul class="list-inline mb-5">
+          <li class="list-inline-item">
+            <a class="social-link rounded-circle text-white mr-3" href="https://twitter.com/MaxOnProgrammin">
+              <i class="icon-social-twitter"></i>
+            </a>
+          </li>
+          <li class="list-inline-item">
+            <a class="social-link rounded-circle text-white" href="https://github.com/miKuZune">
+              <i class="icon-social-github"></i>
+            </a>
+          </li>
+        </ul>
+        <p>Or email me at:</p>
+        <h5>maxwfarley@live.co.uk</h5>
+      </div>
+    </footer>
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="js/stylish-portfolio.min.js"></script>
+
+  </body>
+
 </html>
