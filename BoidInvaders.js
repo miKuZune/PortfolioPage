@@ -11,7 +11,7 @@ class BoidGame
         areaStartPos = (window.innerWidth / 2) - (areaSize / 2);
 
 
-        this.gameState = "end";
+        this.gameState = "start";
 
         this.score = 0;
         this.scorePerKill = 10;
