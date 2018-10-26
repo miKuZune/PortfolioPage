@@ -26,13 +26,13 @@ class BoidGame
 
         PlayerObj = new GameObject(playerPos, playerSize);
 
-
+		this.timer = 0;
     }
 
     CreateBullet(vec)
     {
         //Create a gameobject to be used in rendering and collision.
-        var BulletOBJ = new GameObject(new Vector2(vec.x, vec.y), new Vector2(10,20), "Bullet");
+        var BulletOBJ = new GameObject(new Vector2(vec.x, vec.y), new Vector2(5,10), "Bullet");
         BulletOBJ.velocity = new Vector2(0,-5);
 
         //Check if the list of bullets has been created yet.
@@ -70,7 +70,7 @@ class BoidGame
 
         ctx.fillText("Press Spacebar to start", areaStartPos + (areaSize * 0.35),areaSize * 0.9);
 
-        if(spaceDown)
+        if(spaceDown && this.timer > 60)
         {
             this.gameState = "play";
             spaceDown = false;
@@ -78,7 +78,10 @@ class BoidGame
 
             //Add Boids
             BoidManagerInst.CreateBoids();
+			this.timer = 0;
         }
+		
+		this.timer++;
 
         window.addEventListener("keypress",onKeyDown);
     }
@@ -143,11 +146,13 @@ class BoidGame
         {
             BoidManagerInst.ChangeGoalPos();
         }
+		
 
 
         //Validation
 
         //Check if Gameobjects exceeds play area
+		//Also if the GameObject is close to the wall it will begin to push them away from the wall
         //Sets them to be within the play area if they have left it.
         for(var i = 0; i < GameObjList.length; i++)
         {
@@ -175,6 +180,29 @@ class BoidGame
                 GameObjList[i].position.y = 0;
                 if(GameObjList[i].tag == "Bullet"){GameObjList.splice(i,1);}
             }
+			
+			//Check if they are close to the walls.
+			if(GameObjList[i].position.x > areaStartPos + areaSize - GameObjList[i].size.x * 0.9)
+			{
+				var force = new Vector2(-10,0);
+				GameObjList[i].AddForce(force, 10);
+			}else if(GameObjList[i].position.x < areaStartPos * 0.9)
+			{
+				var force = new Vector2(-10,0);
+				GameObjList[i].AddForce(force, 10);
+			}
+			
+			if(GameObjList[i].position.y > areaSize * 0.7 && GameObjList[i].tag != "Bullet")
+            {
+                var force = new Vector2(0,-10);
+				GameObjList[i].AddForce(force, 10);
+            }
+            else if(GameObjList[i].position.y < 0 + areaSize * 0.1 && GameObjList[i].tag != "Bullet")
+            {
+                var force = new Vector2(0,10);
+				GameObjList[i].AddForce(force, 10);
+            }
+			
         }
 
 
@@ -237,11 +265,15 @@ class BoidGame
 
         ctx.fillText("Press Space to continue", (areaStartPos + areaSize/2), areaSize * 0.9);
 
-        if(spaceDown)
+        if(spaceDown && this.timer > 60)
         {
             this.gameState = "start";
             spaceDown = false;
+			
+			this.timer = 0;
         }
+		
+		this.timer++;
 
         window.addEventListener("keypress",onKeyDown);
     }
@@ -306,10 +338,10 @@ var bulletCD = 0;
 //Probably shouldn't set this to more than like 2500
 var startBoidNum = 150;
 
-var goalWeight = 3;
+var goalWeight = 2;
 var aliWeight = 1;
 var cohWeight = 2;
-var avoWeight = 2.5;
+var avoWeight = 2.1;
 
 //Input variables
 

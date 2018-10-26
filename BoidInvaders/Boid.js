@@ -7,6 +7,9 @@ class Boid
 
         this.neighbourDist = 250;
         this.moveSpeed = (Math.random() * 6) + 3;
+		
+		this.tickRate = (Math.random() * 3) + 3;
+		
     }
 
     MoveByVelocity()
@@ -122,7 +125,8 @@ class Boid
 
     Flock()
     {
-        if(Math.random() * 15 <= 1)
+		
+        if(Math.random() * 7 <= 1)
         {
             var ali = this.Align();
             var coh = this.Cohesion();

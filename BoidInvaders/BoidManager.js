@@ -13,7 +13,7 @@ class BoidManager
         {
             //Create a start pos for the Agent
             var pos = new Vector2(Math.random() * (areaSize - xOffset) + areaStartPos, Math.random() * (areaSize - yOffset));
-            var size = new Vector2 (10,10);
+            var size = new Vector2 (5,5);
             //Create the agent object
             var newObj = new GameObject(pos,size);
             //Add the agent to the Draw list.
@@ -29,7 +29,7 @@ class BoidManager
 
     ChangeGoalPos()
     {
-        this.goal = new Vector2((Math.random() * areaSize) + areaStartPos, Math.random() * areaSize );
+        this.goal = new Vector2((Math.random() * areaSize * 0.8) + areaStartPos, Math.random() * areaSize * 0.8 );
     }
 
 }
