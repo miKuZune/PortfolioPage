@@ -36,6 +36,11 @@ class Vector2 {
         this.y/= length;
     }
 
+    static Distance(vec1, vec2)
+    {
+        return Math.sqrt(Math.pow(vec1.x - vec2.x,2) + Math.pow(vec1.y - vec2.y,2));
+    }
+
     static RotateTowards(currDir, targetDir, step)
     {
         var newDir = new Vector2(0,0);

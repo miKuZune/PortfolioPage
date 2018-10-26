@@ -103,6 +103,7 @@ class BoidGame
             for(var i = 0; i < BulletList.length; i++)
             {
                 BulletList[i].obj.MoveWithVelocity();
+                BulletList[i].Execute(BoidList);
             }
         }
 
@@ -142,10 +143,24 @@ class BoidGame
 
 
         //Change swarm goal pos randomly
-        if(Math.random() * 100 <= 1)
+        if(Math.random() * 50 <= 1)
         {
             BoidManagerInst.ChangeGoalPos();
         }
+
+        //Handle player movement based on current inputs
+        if(aDown)
+        {
+            playerX_Vel = -moveSpeed;
+        }else if(dDown)
+        {
+            playerX_Vel = moveSpeed;
+        }else
+        {
+            playerX_Vel = 0;
+        }
+        //Draw the player.
+        PlayerObj.Translate(new Vector2(playerX_Vel,0));
 		
 
 
@@ -205,6 +220,17 @@ class BoidGame
 			
         }
 
+        //Check if the player exceeds bounds
+        if(PlayerObj.position.x > areaStartPos + areaSize - PlayerObj.size.x)
+        {
+            PlayerObj.position.x = areaStartPos + areaSize - PlayerObj.size.x;
+        }
+        //Check if they have gone beyond the left side of the play area.
+        if(PlayerObj.position.x < areaStartPos)
+        {
+            PlayerObj.position.x = areaStartPos;
+        }
+
 
 
         //Draw the list of game objects
@@ -223,19 +249,7 @@ class BoidGame
         ctx.fillStyle = "black";
         ctx.fillText("Score: " + this.score, areaStartPos,20);
 
-        //Handle player movement based on current inputs
-        if(aDown)
-        {
-            playerX_Vel = -moveSpeed;
-        }else if(dDown)
-        {
-            playerX_Vel = moveSpeed;
-        }else
-        {
-            playerX_Vel = 0;
-        }
-        //Draw the player.
-        PlayerObj.Translate(new Vector2(playerX_Vel,0));
+
 
 
         //Check for end game state
@@ -338,10 +352,10 @@ var bulletCD = 0;
 //Probably shouldn't set this to more than like 2500
 var startBoidNum = 150;
 
-var goalWeight = 2;
+var goalWeight = 4;
 var aliWeight = 1;
 var cohWeight = 2;
-var avoWeight = 2.1;
+var avoWeight = 2.2;
 
 //Input variables
 
