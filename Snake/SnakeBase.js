@@ -2,6 +2,8 @@ class SnakeBase
 {
     Init()
     {
+		areaStartPos = (window.innerWidth / 2) - (areaSize / 2);
+		
         //Initalise the snake grid.
         this.grid = [[new Vector2(0,0)]];
 
@@ -80,5 +82,5 @@ class SnakeBase
 SnakeInst = new SnakeBase();
 
 //Global variables
-areaStartPos = 600;
+areaStartPos = 0;
 areaSize = 600;
