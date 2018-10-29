@@ -32,6 +32,14 @@ class SnakeBase
         this.snakeGridX = parseInt(this.width/2);
         this.snakeGridY = parseInt(this.height/3);
         this.snakeState = "up";
+
+        //Create an array to store the snakes body.
+        this.snakeBodyLength = 3;
+        this.snakeBodyArr = [0,0];
+        for(var i = 0; i < this.snakeBodyLength; i++)
+        {
+            this.snakeBodyArr[i] = [this.snakeGridX,this.snakeGridY];
+        }
     }
 
     //
@@ -47,8 +55,6 @@ class SnakeBase
 
     DrawCanvas(ctx,areaSize)
     {
-
-
         ctx.canvas.width = window.innerWidth;
         ctx.canvas.height = window.innerHeight;
         //Fill in a background for the whole page.
@@ -87,9 +93,21 @@ class SnakeBase
                         SnakeInst.snakeGridX++;
                     break;
             }
+
+
+
+            //Handle the snake's body.
+            var tempArr = [0,0];
+            
+            for(var i = 0; i < SnakeInst.snakeBodyLength; i++)
+            {
+                tempArr[i] = SnakeInst.snakeBodyArr[i + 1];
+            }
+            tempArr[SnakeInst.snakeBodyLength - 1] = [SnakeInst.snakeGridX, SnakeInst.snakeGridY];
             //Store the new postion of the snake.
             var snakeVec = SnakeInst.grid[SnakeInst.snakeGridX][SnakeInst.snakeGridY];
 
+            SnakeInst.snakeBodyArr = tempArr;
 
             //Draw gameobjects.
             //Draw target.
@@ -98,12 +116,15 @@ class SnakeBase
             //Draw snake
             ctx.fillStyle = 'rgba(0,255,255,255)';
             ctx.fillRect(snakeVec.x, snakeVec.y, SnakeInst.objsSize,SnakeInst.objsSize);
+            //Draw snake's body
+            for(var i = 0; i < SnakeInst.snakeBodyLength;i++)
+            {
+                var bodyVec = SnakeInst.grid[SnakeInst.snakeBodyArr[i][0]][SnakeInst.snakeBodyArr[i][1]];
+                ctx.fillRect(bodyVec.x,bodyVec.y, SnakeInst.objsSize, SnakeInst.objsSize);
+            }
         }, 250);
     }
-
-
 }
-
 SnakeInst = new SnakeBase();
 
 //Global variables
