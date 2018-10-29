@@ -11,33 +11,37 @@ class SnakeBase
         this.width = areaSize / this.objsSize;
         this.height = areaSize / this.objsSize;
 
-        var j = 0; //Width counter
-        var k = 0; //Height counter
-        for(var i = 0; i < this.width * this.height; i++)
+        //Create a 2d Array for the grid.
+        for(var i = 0; i < this.width; i++)
         {
-            this.grid[i] = [areaStartPos +  (j * this.objsSize) , k * this.objsSize];
-            j++;
-            if(j > this.width - 1)
+            //Create a new line for data to be stored.
+            this.grid[i] = [new Vector2(0,0)];
+            for(var j = 0; j < this.height; j++)
             {
-                j = 0;
-                k++;
+                this.grid[i][j] = new Vector2(areaStartPos + (i * this.objsSize), j * this.objsSize);
             }
         }
+
 
         //Create and place the snake target.
 
         this.appleVec = new Vector2(0,0);
-
         this.PlaceApple();
+
+        //Create the snake
+        this.snakeGridX = parseInt(this.width/2);
+        this.snakeGridY = parseInt(this.height/3);
+        this.snakeState = "up";
     }
 
     //
     PlaceApple()
     {
-        var newPos = Math.random() * (this.width * this.height);
-        newPos =  parseInt(newPos);
+        //Choose two random x and y positions within the grid array and store the apple at that position.
+        var randX = parseInt(Math.random() * this.width);
+        var randY = parseInt(Math.random() * this.height);
 
-        this.appleVec = new Vector2(this.grid[newPos][0], this.grid[newPos][1]);
+        this.appleVec = this.grid[randX][randY];
 
     }
 
@@ -67,13 +71,34 @@ class SnakeBase
 
             SnakeInst.DrawCanvas(ctx, areaSize);
 
+            //Handle the snakes direction
+            switch(SnakeInst.snakeState)
+            {
+                case "up":
+                        SnakeInst.snakeGridY--;
+                    break;
+                case "down":
+                        SnakeInst.snakeGridY++;
+                    break;
+                case "left":
+                        SnakeInst.snakeGridX--;
+                    break;
+                case "right":
+                        SnakeInst.snakeGridX++;
+                    break;
+            }
+            //Store the new postion of the snake.
+            var snakeVec = SnakeInst.grid[SnakeInst.snakeGridX][SnakeInst.snakeGridY];
+
+
+            //Draw gameobjects.
+            //Draw target.
             ctx.fillStyle = 'rgba(255,0,0,255)';
-
             ctx.fillRect(SnakeInst.appleVec.x, SnakeInst.appleVec.y,  SnakeInst.objsSize, SnakeInst.objsSize );
-
-
-
-        }, 17);
+            //Draw snake
+            ctx.fillStyle = 'rgba(0,255,255,255)';
+            ctx.fillRect(snakeVec.x, snakeVec.y, SnakeInst.objsSize,SnakeInst.objsSize);
+        }, 250);
     }
 
 
