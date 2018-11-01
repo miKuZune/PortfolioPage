@@ -2,8 +2,16 @@ class SnakeBase
 {
     Init()
     {
-		areaStartPos = (window.innerWidth / 2) - (areaSize / 2);
-		
+        areaStartPos = (window.innerWidth / 2) - (areaSize / 2);
+
+        this.timer = 0;
+        this.spacePressed = false;
+
+        this.gameState = "start";
+    }
+
+    StartGame()
+    {
         //Initalise the snake grid.
         this.grid = [[new Vector2(0,0)]];
 
@@ -74,75 +82,155 @@ class SnakeBase
 
             SnakeInst.DrawCanvas(ctx, areaSize);
 
-
-            //Handle the snake AI
-            SnakeAI_Inst.Execute();
-
-            //Handle the snakes direction
-            switch(SnakeInst.snakeState)
+            switch(SnakeInst.gameState)
             {
-                case "up":
-                        SnakeInst.snakeGridY--;
+                case "start":
+                    SnakeInst.Start(ctx);
                     break;
-                case "down":
-                        SnakeInst.snakeGridY++;
+                case "play":
+                    //Handle the snake AI
+                    SnakeAI_Inst.Execute();
+                    SnakeInst.Play(ctx);
                     break;
-                case "left":
-                        SnakeInst.snakeGridX--;
+
+                case "end":
+                    SnakeInst.End(ctx);
                     break;
-                case "right":
-                        SnakeInst.snakeGridX++;
-                    break;
-            }
-
-
-
-            //Handle the snake's body.
-            var tempArr = [0,0];
-
-            for(var i = 0; i < SnakeInst.snakeBodyLength; i++)
-            {
-                tempArr[i] = SnakeInst.snakeBodyArr[i + 1];
-            }
-            tempArr[SnakeInst.snakeBodyLength - 1] = [SnakeInst.snakeGridX, SnakeInst.snakeGridY];
-            //Store the new postion of the snake.
-            var snakeVec = SnakeInst.grid[SnakeInst.snakeGridX][SnakeInst.snakeGridY];
-
-            SnakeInst.snakeBodyArr = tempArr;
-
-            //Check if the snake has reached the target
-
-            if(SnakeInst.snakeGridX == SnakeInst.appleX && SnakeInst.snakeGridY == SnakeInst.appleY)
-            {
-                SnakeInst.PlaceApple();
-
-                var x = SnakeInst.snakeBodyArr[SnakeInst.snakeBodyLength - 1][0];
-                var y = SnakeInst.snakeBodyArr[SnakeInst.snakeBodyLength - 1][1];
-                SnakeInst.snakeBodyLength++;
-                SnakeInst.snakeBodyArr.push([x,y]);
-
-
-            }
-
-
-            //Draw gameobjects.
-            //Draw target.
-            ctx.fillStyle = 'rgba(255,0,0,255)';
-            var appleVec = SnakeInst.grid[SnakeInst.appleX][SnakeInst.appleY];
-            ctx.fillRect(appleVec.x, appleVec.y,  SnakeInst.objsSize, SnakeInst.objsSize );
-            //Draw snake
-            ctx.fillStyle = 'rgba(0,255,255,255)';
-            ctx.fillRect(snakeVec.x, snakeVec.y, SnakeInst.objsSize,SnakeInst.objsSize);
-            //Draw snake's body
-            for(var i = 0; i < SnakeInst.snakeBodyLength;i++)
-            {
-                var bodyVec = SnakeInst.grid[SnakeInst.snakeBodyArr[i][0]][SnakeInst.snakeBodyArr[i][1]];
-                ctx.fillRect(bodyVec.x,bodyVec.y, SnakeInst.objsSize, SnakeInst.objsSize);
             }
         }, 17);
     }
+
+    Start(ctx)
+    {
+        ctx.font = "40px Consolas";
+        ctx.fillStyle = "black";
+        ctx.textAlign = "center";
+        ctx.fillText("Snake Path finding.", areaStartPos + (areaSize / 2), areaSize * 0.1);
+
+        ctx.font = "25px Consolas";
+        ctx.fillText("Press spacebar to start", areaStartPos + (areaSize * 0.5), areaSize * 0.9);
+
+        if(this.spacePressed && this.timer > 60)
+        {
+            this.gameState = "play";
+            this.spacePressed = false;
+
+            this.StartGame();
+        }
+
+        this.timer++;
+
+        window.addEventListener("keypress",keyDown);
+    }
+
+
+    Play(ctx)
+    {
+        //Handle the snakes direction
+        switch(SnakeInst.snakeState)
+        {
+            case "up":
+                SnakeInst.snakeGridY--;
+                break;
+            case "down":
+                SnakeInst.snakeGridY++;
+                break;
+            case "left":
+                SnakeInst.snakeGridX--;
+                break;
+            case "right":
+                SnakeInst.snakeGridX++;
+                break;
+        }
+
+        //Check if the snake's head is inside it's body.
+        for(var i = 0; i < SnakeInst.snakeBodyArr.length; i++)
+        {
+            if(SnakeInst.snakeGridX == SnakeInst.snakeBodyArr[i][0] && SnakeInst.snakeGridY == SnakeInst.snakeBodyArr[i][1])
+            {
+                SnakeInst.gameState = "end";
+            }
+        }
+
+        //Handle the snake's body.
+        var tempArr = [0,0];
+
+        for(var i = 0; i < SnakeInst.snakeBodyLength; i++)
+        {
+            tempArr[i] = SnakeInst.snakeBodyArr[i + 1];
+        }
+        tempArr[SnakeInst.snakeBodyLength - 1] = [SnakeInst.snakeGridX, SnakeInst.snakeGridY];
+        //Store the new postion of the snake.
+        var snakeVec = SnakeInst.grid[SnakeInst.snakeGridX][SnakeInst.snakeGridY];
+
+        SnakeInst.snakeBodyArr = tempArr;
+
+        //Check if the snake has reached the target
+        if(SnakeInst.snakeGridX == SnakeInst.appleX && SnakeInst.snakeGridY == SnakeInst.appleY)
+        {
+            SnakeInst.PlaceApple();
+
+            var x = SnakeInst.snakeBodyArr[SnakeInst.snakeBodyLength - 1][0];
+            var y = SnakeInst.snakeBodyArr[SnakeInst.snakeBodyLength - 1][1];
+            SnakeInst.snakeBodyLength++;
+            SnakeInst.snakeBodyArr.push([x,y]);
+        }
+
+
+
+
+        //Draw gameobjects.
+        //Draw target.
+        ctx.fillStyle = 'rgba(255,0,0,255)';
+        var appleVec = SnakeInst.grid[SnakeInst.appleX][SnakeInst.appleY];
+        ctx.fillRect(appleVec.x, appleVec.y,  SnakeInst.objsSize, SnakeInst.objsSize );
+        //Draw snake
+        ctx.fillStyle = 'rgba(0,255,255,255)';
+        ctx.fillRect(snakeVec.x, snakeVec.y, SnakeInst.objsSize,SnakeInst.objsSize);
+        //Draw snake's body
+        for(var i = 0; i < SnakeInst.snakeBodyLength;i++)
+        {
+            var bodyVec = SnakeInst.grid[SnakeInst.snakeBodyArr[i][0]][SnakeInst.snakeBodyArr[i][1]];
+            ctx.fillRect(bodyVec.x,bodyVec.y, SnakeInst.objsSize, SnakeInst.objsSize);
+        }
+    }
+
+    End(ctx)
+    {
+        ctx.font = "40px Consolas";
+        ctx.fillStyle = "black";
+        ctx.textAlign = "center";
+        ctx.fillText("Game Over!", areaStartPos + (areaSize / 2), areaSize * 0.5);
+
+
+        ctx.font = "25px Consolas";
+        ctx.fillText("Press spacebar", areaStartPos + (areaSize * 0.5), areaSize * 0.9);
+
+        if(this.spacePressed && this.timer > 60)
+        {
+            this.gameState = "start";
+            this.spacePressed = false;
+
+            this.StartGame();
+        }
+
+        this.timer++;
+
+        window.addEventListener("keypress",keyDown);
+    }
 }
+
+function keyDown(e)
+{
+    if(e.key == ' ')
+    {
+        SnakeInst.spacePressed = true;
+    }
+
+}
+
 SnakeInst = new SnakeBase();
+
 
 //Global variables
 areaStartPos = 0;
