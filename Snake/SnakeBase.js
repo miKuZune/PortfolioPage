@@ -8,6 +8,8 @@ class SnakeBase
         this.spacePressed = false;
 
         this.gameState = "start";
+
+
     }
 
     StartGame()
@@ -48,6 +50,8 @@ class SnakeBase
         {
             this.snakeBodyArr[i] = [this.snakeGridX,this.snakeGridY];
         }
+
+        SnakeAI_Inst.Init();
     }
 
     //
