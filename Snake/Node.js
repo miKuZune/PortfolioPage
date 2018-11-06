@@ -9,6 +9,8 @@ class Node
 
         this.x = 0;
         this.y = 0;
+
+        this.dir = "";
     }
 
     SetParent(parent)
@@ -36,5 +38,8 @@ class Node
         this.y = y;
     }
 
-
+    SetDir(dir)
+    {
+        this.dir = dir;
+    }
 }

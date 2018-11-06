@@ -67,6 +67,8 @@ class SnakeAI
 
     A_StarPathFind()
     {
+        var openList = [];
+        var closedList = [];
         //Create a list of nodes - each with it's own h value (it's distance from the target) and space for a parent (relation to adjacent node.
         var targetX = SnakeInst.appleX;
         var targetY = SnakeInst.appleY;
@@ -81,16 +83,157 @@ class SnakeAI
             for(var j = 0; j < SnakeInst.grid[i].length; j++)
             {
                 var newNode = new Node();
-                newNode.SetX(SnakeInst.grid[i][j].x);
-                newNode.SetY(SnakeInst.grid[i][j].y);
+                newNode.SetX(i);
+                newNode.SetY(j);
 
                 var h = Math.sqrt((i - targetX) * (i - targetX)) + Math.sqrt((j - targetY) * (j - targetY));
                 newNode.SetH(h);
+
                 nodeArray[i][j] = newNode;
             }
         }
 
-        console.log(nodeArray);
+        closedList[0] = nodeArray[SnakeInst.snakeGridX][SnakeInst.snakeGridY];
+        closedList[0].SetDir(SnakeInst.snakeState);
+
+        var doingClosed = true;
+        var j = 0;
+
+        while(doingClosed)
+        {
+            switch(closedList[j].dir)
+            {
+                case "up":
+                    var newNode = new Node();
+                    //Right node
+                    newNode = nodeArray[closedList[j].x+ 1][closedList[j].y];
+                    newNode.parent = nodeArray[closedList[j].x][closedList[j].y];
+                    newNode.SetDir("right");
+
+                    openList.push(newNode);
+                    //Left node
+                    newNode = nodeArray[closedList[j].x - 1][closedList[j].y];
+                    newNode.parent = nodeArray[closedList[j].x][closedList[j].y]
+                    newNode.SetDir("left");
+
+                    openList.push(newNode);
+                    //Up node
+                    newNode = nodeArray[closedList[j].x][closedList[j].y - 1];
+                    newNode.parent = nodeArray[closedList[j].x][closedList[j].y]
+                    newNode.SetDir("up");
+
+                    openList.push(newNode);
+                    break;
+                case "down":
+                    var newNode = new Node();
+                    //Right node
+                    newNode = nodeArray[closedList[j].x + 1][closedList[j].y];
+                    newNode.parent = nodeArray[closedList[j].x][closedList[j].y]
+                    newNode.SetDir("right");
+
+                    openList.push(newNode);
+                    //Left node
+                    newNode = nodeArray[closedList[j].x - 1][closedList[j].y];
+                    newNode.parent = nodeArray[closedList[j].x][closedList[j].y]
+                    newNode.SetDir("left");
+
+                    openList.push(newNode);
+                    //Down node
+                    newNode = nodeArray[closedList[j].x][closedList[j].y + 1];
+                    newNode.parent = nodeArray[closedList[j].x][closedList[j].y]
+                    newNode.SetDir("down");
+
+                    openList.push(newNode);
+                    break;
+                case "left":
+                    var newNode = new Node();
+
+                    //Left node
+                    newNode = nodeArray[closedList[j].x - 1][closedList[j].y];
+                    newNode.parent = nodeArray[closedList[j].x][closedList[j].y]
+                    newNode.SetDir("left");
+
+                    openList.push(newNode);
+                    //Down node
+                    newNode = nodeArray[closedList[j].x][closedList[j].y];
+                    newNode.parent = nodeArray[closedList[j].x][closedList[j].y]
+                    newNode.SetDir("down");
+
+                    openList.push(newNode);
+                    //Up node
+                    newNode = nodeArray[closedList[j].x][closedList[j].y - 1];
+                    newNode.parent = nodeArray[closedList[j].x][closedList[j].y]
+                    newNode.SetDir("up");
+
+                    openList.push(newNode);
+                    break;
+                case "right":
+                    var newNode = new Node();
+
+                    //Right node
+                    newNode = nodeArray[SnakeInst.snakeGridX + 1][SnakeInst.snakeGridY];
+                    newNode.parent = nodeArray[closedList[j].x][closedList[j].y]
+                    newNode.SetDir("right");
+
+                    openList.push(newNode);
+                    //Down node
+                    newNode = nodeArray[SnakeInst.snakeGridX ][SnakeInst.snakeGridY + 1];
+                    newNode.parent = nodeArray[closedList[j].x][closedList[j].y]
+                    newNode.SetDir("down");
+
+                    openList.push(newNode);
+                    //Up node
+                    newNode = nodeArray[SnakeInst.snakeGridX][SnakeInst.snakeGridY - 1];
+                    newNode.parent = nodeArray[closedList[j].x][closedList[j].y]
+                    newNode.SetDir("up");
+
+                    openList.push(newNode);
+                    break;
+            }
+
+            var lowestValue = 0;
+            var lowestList = [];
+            for(var i = 0; i < openList.length; i++)
+            {
+                if(openList[i].h < lowestValue || lowestValue == 0)
+                {
+                    lowestList = [];
+                    lowestValue = openList[i].h;
+                    lowestList.push(openList[i]);
+                }else if(openList[i].h == lowestValue)
+                {
+                    lowestList.push(openList[i]);
+                }
+            }
+
+            for(var i = 0; i < lowestList.length; i++)
+            {
+                if(closedList.indexOf(lowestList[i]) == -1)
+                {
+                    closedList[closedList.length] = lowestList[i];
+
+                    var ind = openList.indexOf(lowestList[i]);
+                    openList.splice(ind);
+
+                    if(lowestList[i].h <= 1)
+                    {
+                        doingClosed = false;
+                    }
+                }
+            }
+
+            console.log(closedList[closedList.length - 1]);
+
+            j++;
+            if(j > 80)
+            {
+                doingClosed = false;
+            }
+
+        }
+
+        var testNode = closedList[closedList.length - 1];
+        console.log(testNode);
 
 
 
