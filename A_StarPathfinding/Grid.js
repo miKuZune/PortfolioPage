@@ -2,7 +2,6 @@ class Grid
 {
     constructor()
     {
-        this.wallClassifier;                    //How to find if a node is a wall or not.
         this.gridWorldSize = new Vector2(0,0);  //The size of the grid.
         this.nodeRadius = 15;
         this.distance = 0.0;
@@ -32,22 +31,24 @@ class Grid
 
     CreateGrid(startVec)
     {
+        var topLeft = startVec;     //Stores the top left area where the grid should start.
+        this.grid = [];             //Create a grid array.
 
-        var topLeft = startVec;
-        this.grid = [];
-
+        //Go through the x length of the grid size
         for(var x = 0; x < this.gridSizeX; x++)
         {
-            this.grid[x] = [];
+            this.grid[x] = [];      //Create a second dimension/ column in this row of the array.
             for(var y = 0; y < this.gridSizeY; y++)
             {
+                //Calculate the pixel position on screen.
                 var worldPoint = new Vector2(topLeft.x + (x * this.nodeDiameter),topLeft.y + (y * this.nodeDiameter));
-
+                //Store in arary.
                 this.grid[x][y] = new Node_P(false, worldPoint,x,y);
             }
         }
     }
 
+    //Go through a given array of wall IDs and change the appropraite nodes to be walls.
     AddWalls(walls)
     {
         for(var i = 0; i < walls.length; i++)
@@ -60,9 +61,9 @@ class Grid
 
     GetNeighbourNode(node)
     {
-        var NeighbourNodes = [];
-        var xCheck;
-        var yCheck;
+        var NeighbourNodes = [];    //Stores the list of neighbouring nodes.
+        var xCheck;                 //Stores the x value to be checked.
+        var yCheck;                 //Stores the y value to be checked.
 
         //Right side
         xCheck = node.gridX + 1;
@@ -114,27 +115,4 @@ class Grid
 
         return NeighbourNodes;
     }
-
-    NodeFromWorldPosition(a_WorldPos)
-    {
-        var xPos = ((a_WorldPos.x + this.gridWorldSize/2) / this.gridWorldSize);
-        var yPos = ((a_WorldPos.y + this.gridWorldSize/2) / this.gridWorldSize);
-
-        console.log((a_WorldPos + this.gridWorldSize ));
-
-        //xPos = xPos.clamp(0,1);
-        //yPos = yPos.clamp(0,1);
-
-        var x = (this.gridSizeX - 1) * xPos;
-        var y = (this.gridSizeY - 1) * yPos;
-
-
-
-        return this.grid[x][y];
-    }
-}
-
-Number.prototype.clamp = function(min,max)
-{
-    return Math.min(Math.max(this,min),max);
 }
