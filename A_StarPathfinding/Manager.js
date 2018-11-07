@@ -21,6 +21,8 @@ class Manager
         //Create the starting and target positions
         this.startID = this.GetRandomID();
         this.targetID = this.GetRandomID();
+        console.log(this.startID);
+        console.log(this.targetID);
         //Define how big the representation of objects is.
         this.objSize = (this.gridInst.nodeRadius * 2) - 1;
 
@@ -28,7 +30,12 @@ class Manager
 
         this.pathfinder = new Pathfinding(this.gridInst, this.gridInst.grid[this.startID.x][this.startID.y].Position, this.gridInst.grid[this.targetID.x][this.targetID.y].Position );
         this.pathfinder.FindPath(this.startID, this.targetID);
-        
+
+
+        //Snake's information
+        this.snakeVel = new Vector2(0,1);
+
+
     }
 
     Run()
@@ -52,6 +59,30 @@ class Manager
             ctx.fillStyle = 'rgba(0,0,255,255)';
 
 
+            //Snake gameplay
+
+            //Decide direction.
+
+            var path = ManagerInst.gridInst.finalPath;
+
+            var dir = ManagerInst.GetDirection(ManagerInst.gridInst.grid[ManagerInst.startID.x][ManagerInst.startID.y], path[path.length-1]);
+            ManagerInst.snakeVel = ManagerInst.GetVelocity(dir);
+
+            //Move by snake's velocity.
+            ManagerInst.startID.x += ManagerInst.snakeVel.x;
+            ManagerInst.startID.y += ManagerInst.snakeVel.y;
+
+            //Check if snake and target are overlapping
+            if(ManagerInst.startID.x == ManagerInst.targetID.x && ManagerInst.startID.y == ManagerInst.targetID.y )
+            {
+                ManagerInst.targetID = ManagerInst.GetRandomID();
+            }
+
+
+
+
+
+            //DRAW TO THE CANVAS
             //Draw the grid.
             for(var i = 0; i < ManagerInst.gridInst.gridSizeY; i++)
             {
@@ -69,6 +100,8 @@ class Manager
 
             //Draw the path from start to target.
             ctx.fillStyle = 'rgba(0,255,255,255)';
+            //USE A* TO FIND THE PATH.
+            ManagerInst.pathfinder.FindPath(ManagerInst.startID, ManagerInst.targetID);
             for(var i = 0;i < ManagerInst.gridInst.finalPath.length; i++)
             {
                 var pathWorldPos = ManagerInst.gridInst.finalPath[i].Position;
@@ -83,10 +116,8 @@ class Manager
             ctx.fillRect(targetWorldPos.x,targetWorldPos.y, ManagerInst.objSize, ManagerInst.objSize);
 
 
-            ManagerInst.targetID =  ManagerInst.GetRandomID();
-            ManagerInst.pathfinder.FindPath(ManagerInst.startID, ManagerInst.targetID);
 
-        }, 250);
+        }, 400);
     }
 
     GetRandomID()
@@ -102,6 +133,57 @@ class Manager
 
         var newVec = new Vector2(newX,newY);
         return newVec;
+    }
+
+    GetDirection(currNode, nextNode)
+    {
+        if(currNode == undefined || nextNode == undefined)
+        {
+            return;
+        }
+        var dir = "";
+
+        if(currNode.Position.x != nextNode.Position.x)
+        {
+            if(nextNode.Position.x > currNode.Position.x) {dir = "right";}
+            else if(nextNode.Position.x < currNode.Position.x) {dir = "left";}
+        }
+        else if(currNode.Position.y != nextNode.Position.y)
+        {
+            if(nextNode.Position.y > currNode.Position.y) {dir = "down";}
+            else if(nextNode.Position.y < currNode.Position.y) {dir = "up";}
+        }
+
+
+        return dir;
+    }
+
+    GetVelocity(dir)
+    {
+        if(dir == undefined)
+        {
+            return this.snakeVel;
+        }
+
+        var vel;
+
+        switch (dir)
+        {
+            case "left":
+                vel = new Vector2(-1,0);
+                break;
+            case "right":
+                vel = new Vector2(1,0);
+                break;
+            case "up":
+                vel = new Vector2(0,-1);
+                break;
+            case "down":
+                vel = new Vector2(0,1);
+                break;
+        }
+
+        return vel;
     }
 }
 
