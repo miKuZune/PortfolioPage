@@ -48,6 +48,16 @@ class Grid
         }
     }
 
+    AddWalls(walls)
+    {
+        for(var i = 0; i < walls.length; i++)
+        {
+            console.log(walls[i]);
+            this.grid[walls[i].x][walls[i].y].IsWall = true;
+
+        }
+    }
+
     GetNeighbourNode(node)
     {
         var NeighbourNodes = [];

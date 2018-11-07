@@ -21,10 +21,21 @@ class Manager
         //Create the starting and target positions
         this.startID = this.GetRandomID();
         this.targetID = this.GetRandomID();
-        console.log(this.startID);
-        console.log(this.targetID);
+
         //Define how big the representation of objects is.
         this.objSize = (this.gridInst.nodeRadius * 2) - 1;
+
+        //Create walls in the level.
+
+        this.wallIDs = [];
+        this.wallNumber = Math.round(Math.random()*15) + 10;
+        for(var i = 0; i < this.wallNumber; i++)
+        {
+            var newVec = this.GetRandomID();
+            this.wallIDs[i] = newVec;
+        }
+
+        this.gridInst.AddWalls(this.wallIDs);
 
         //Create an object for pathfinding.
 
@@ -62,7 +73,6 @@ class Manager
             //Snake gameplay
 
             //Decide direction.
-
             var path = ManagerInst.gridInst.finalPath;
 
             var dir = ManagerInst.GetDirection(ManagerInst.gridInst.grid[ManagerInst.startID.x][ManagerInst.startID.y], path[path.length-1]);
@@ -101,12 +111,21 @@ class Manager
             //Draw the path from start to target.
             ctx.fillStyle = 'rgba(0,255,255,255)';
             //USE A* TO FIND THE PATH.
+            //ManagerInst.gridInst.AddWalls(ManagerInst.wallIDs);
             ManagerInst.pathfinder.FindPath(ManagerInst.startID, ManagerInst.targetID);
             for(var i = 0;i < ManagerInst.gridInst.finalPath.length; i++)
             {
                 var pathWorldPos = ManagerInst.gridInst.finalPath[i].Position;
 
                 ctx.fillRect(pathWorldPos.x, pathWorldPos.y, ManagerInst.objSize,ManagerInst.objSize);
+            }
+
+            //Draw walls
+            ctx.fillStyle = 'rgba(255,255,41,255)';
+            for(var i = 0; i < ManagerInst.wallIDs.length; i++)
+            {
+                var wallWorldPos = ManagerInst.gridInst.grid[ManagerInst.wallIDs[i].x][ManagerInst.wallIDs[i].y].Position;
+                ctx.fillRect(wallWorldPos.x,wallWorldPos.y, ManagerInst.objSize,ManagerInst.objSize);
             }
 
             //Draw the target pos
