@@ -47,7 +47,7 @@ li a:hover
 .header-text {
   margin: auto;
   width: 50%;
-  padding: 2.5em;
+  padding: 1.5em;
   text-align: center;
   color: white;
 }
@@ -58,13 +58,14 @@ li a:hover
   display: inline-block;
   padding: 10px 25px;
   color: black;
-  background-color: #ddd;
+  background-color: #38A1F3;
   text-align: center;
   cursor: pointer;
+  border-radius: 4px;
 }
 
 .header-text button:hover {
-  background-color: #555;
+  background-color: #008af7;
   color: white;
 }
 
@@ -218,7 +219,7 @@ p.aboutMe
 
 .CV_button
 {
-	background-color: #333;
+	background-color: #4CAF50;
 	border: none;
 	color: white;
 	padding: 15px 32px;
@@ -232,7 +233,7 @@ p.aboutMe
 
 .CV_button:hover
 {
-	background-color:#111;
+	background-color: grey;
 }
 
 .ContactMe_contatiner
