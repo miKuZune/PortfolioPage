@@ -7,6 +7,10 @@ body{
     background: #333333;
     color: #969ba1;
     font-family: 'Roboto', sans-serif;
+
+    position: absolute;
+    width: 100%;
+    min-height: 100vh;
 }
 
 footer, header{
@@ -89,6 +93,11 @@ footer .footer-innner-container, header .header-inner-container{
     font-size: 17px;
 }
 
+.project-outer-container{
+    min-height: 312px;
+    position: relative;
+}
+
 .project-container{
     display: flex;
     align-content: center;
@@ -127,6 +136,24 @@ footer .footer-innner-container, header .header-inner-container{
 
 .project p{
     text-align: center;
+}
+
+@media only screen and (max-width: 768px){
+    .project-container{
+    
+        width: 95vw;
+        width:calc(100vw - 24px);
+        
+        position: absolute;
+        top:0;
+        left: -64px;
+        padding: 0 12px;
+
+        overflow: scroll;
+    }
+    footer .footer-innner-container, header .header-inner-container{
+        margin:0;
+    }
 }
 
 /* The Modal (background) */
@@ -237,13 +264,14 @@ footer .footer-innner-container, header .header-inner-container{
 
   .about-text-container, .read-more-container{
       width: 512px;
+      max-width: 100%;
       margin:0 auto;
-      
   }
 
   .about-text-container{
     height: 128px;
     overflow: hidden;
+    max-width: 100%;
   }
   
   .read-more-container{
