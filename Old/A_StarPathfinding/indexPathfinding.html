@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!--Scripts for this project.-->
+    <script src= "Node.js"></script>
+    <script src ="Grid.js"></script>
+    <script src = "Pathfinding.js"></script>
+    <script src ="Manager.js"></script>
+
+    <!--General use library scripts.-->
+    <script src = "Lib/Vector2.js"></script>
+    <title>A*</title>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+
+<script>
+
+    document.documentElement.style.overflow = 'hidden';  // firefox, chrome
+    document.body.scroll = "no"; // ie only
+    document.body.style.padding = 0;
+    document.body.style.margin = 0;
+
+    ManagerInst.Run();
+
+</script>
+
+</body>
+</html>

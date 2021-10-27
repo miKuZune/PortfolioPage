@@ -1,0 +1,76 @@
+<h1>About Me</h1>
+<div class="about-text-container" id="about-text-container">
+    <p>
+        I've always loved games. Ever since I was young I've played video games. I first started playing games 
+        on my dad's computer, playing kids games we used to get every week from magazines. As I grew up a bit I moved on
+        to playing games on the Play Station 2, playing games like Harry Potter: Quidditch World Cup & 
+        Star Wars battlefront. I continued playing games, moving onto an Xbox 360 before building my own computer.
+    </p>
+    <p>
+        I first found my love of coding in high school on an introductory course where we coded a basic game where
+        you control a crab on the beach to pick up seaweed. I quickly sped through the tutorial and began adding and 
+        amending, adding a second player and changing the seaweed to other crabs that would chase the player. From 
+        there I went on to do Computing at GSCE and A-Level where I continued to use Java.
+    </p>
+    <p>
+        After high school I went on to study Computing for Games (BSc) at Falmouth University. I started off using Unreal,
+        learing to use Blueprints and C++ in first year. In second & third year I mainly used Unity and C#, while also
+        using a small amount of C++. A huge focus of the course was group game projects. Each year we had at least one
+        long term group game project where we worked with a multi disciplinary team to create a game. In first year 
+        we had a 3 month group project where we used Unreal to create an melee wave based arena game. In second year we
+        had a 9 month long project where we used Unity to create a multi-player first person shooter game. In third year 
+        we again had a 9 month project where we used Unity again to create a 2.5D metroidvania style game.
+    </p>
+    <p>
+        After university I worked as a web developer for a design agency called Antoine Lock where I made websites, games, apps & 
+        web technology to suit a clients needs. Initially I was brought for a freelance project making a web based game
+        for Beyblade.com whose website was made and maintained by Antoine Lock already. After showing initial prototypes
+        for the web game I was asked to join full time. In the first few months I did a lot of learning as web development
+        was mostly new to me. I spent a lot of time initally learning JavaScript, PHP, CSS, HTML & Wordpress as these
+        were the core languages that were being used to build websites by the design agency. I later also took what I'd 
+        learned about JavaScript to learn NodeJS when we were looking to build web technology & learned to use react native
+        to build some apps.
+    </p>
+</div>
+
+<div class="read-more-container">
+    <div class="button" id="about-me-container" onclick="ReadMoreAboutButtonClick();">
+        <p>Read More</p>
+    </div>
+</div>
+
+<script>
+
+    let aboutMeContainer = document.getElementById('about-text-container');
+    let aboutMeButton = document.getElementById('about-me-container');
+    let aboutMeOpen = false;
+
+    function OpenAboutMe(){
+        // aboutMeContainer.style.overflow = "unset";
+        aboutMeContainer.style.height = "auto";
+        aboutMeContainer.style.transition = "0.5s";
+
+        aboutMeButton.innerHTML = "<p>Close</p>";
+
+        aboutMeOpen = true;
+    }
+
+    function CloseAboutMe(){
+        // aboutMeContainer.style.overflow = "";
+        aboutMeContainer.style.height = "";
+        aboutMeContainer.style.transition = "0.5s";
+
+        aboutMeButton.innerHTML = "<p>Read More</p>";
+
+        aboutMeOpen = false;
+    }
+
+    function ReadMoreAboutButtonClick(){
+
+        if(aboutMeOpen == true){
+            CloseAboutMe();
+        }else{
+            OpenAboutMe();
+        }
+    }
+</script>

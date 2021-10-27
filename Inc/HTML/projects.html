@@ -1,0 +1,56 @@
+<h1>Projects</h1>
+<div class="project-container" id="project-container"></div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content" id="modal-content-container">
+        <span class="close">&times;</span>
+        
+    </div>
+
+</div>
+
+<script>
+    let projectContainer = document.getElementById('project-container');
+    let modalContentContainer = document.getElementById('modal-content-container');
+    let projects = [
+        // {link: "Inc/HTML/Projects/ori.html", modalContentID: "ori"},
+        // {link: "Inc/HTML/Projects/ahri.html", modalContentID: "ahri"},
+        {link: "Inc/HTML/Projects/beyblade.html", modalContentID: "beyblade"},
+        {link: "Inc/HTML/Projects/dissertation.html", modalContentID: "dissertation"},
+        {link: "Inc/HTML/Projects/fey.html", modalContentID: "fey"},
+        // {link: "Inc/HTML/Projects/ascension.html", modalContentID: "ascension"}
+    ];
+
+
+    for(let i = 0; i < projects.length; i++){
+        // Add project preview card
+        let newProjectContainer = document.createElement('div');
+        newProjectContainer.classList.add('project');
+        newProjectContainer.onclick = () => { OpenModal(projects[i].modalContentID); }
+
+        let projectInnerContainer = document.createElement('div');
+        projectInnerContainer.classList.add('project-inner');
+
+        $(projectInnerContainer).load( projects[i].link + " #preview");
+
+        newProjectContainer.appendChild(projectInnerContainer);
+        projectContainer.appendChild(newProjectContainer);
+
+        // Add content to the modal
+        let newModalContentContainer = document.createElement('div');
+        $(newModalContentContainer).load( projects[i].link + " #modal-content");
+
+        modalContentContainer.appendChild(newModalContentContainer);
+
+        // Add the script
+        let scriptContainer = document.createElement('script');
+
+        $(scriptContainer).load(projects[i].link, "#script");
+        document.body.appendChild(scriptContainer);
+    }
+
+
+</script>
