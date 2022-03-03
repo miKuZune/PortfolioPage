@@ -1,67 +1,222 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <meta name="description" content="Max Farley's personal portfolio">
-        <meta name="keywords" content="">
-        <meta name="author" content="Max Farley">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Max Farley</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link rel="stylesheet" type="text/css" href="Inc/CSS/main.css">
-
-        <script src="Inc/JS/modal.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-        <script src="Inc/JS/slideshow.js"></script>
-        <script src="https://kit.fontawesome.com/9f2e914f55.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="Inc/main.css" />
     </head>
 
     <body>
-        <div id="header"></div>
+        <header id="header-menu">
+            <div class="menu-controller-button-container">
+                <div class="close-button" id="close-button" style="display:none;">
+                    <?xml version="1.0" encoding="iso-8859-1"?>
+                    <!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+                    <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+                    <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        viewBox="0 0 460.775 460.775" style="enable-background:new 0 0 460.775 460.775;" xml:space="preserve">
+                        <path d="M285.08,230.397L456.218,59.27c6.076-6.077,6.076-15.911,0-21.986L423.511,4.565c-2.913-2.911-6.866-4.55-10.992-4.55
+                        c-4.127,0-8.08,1.639-10.993,4.55l-171.138,171.14L59.25,4.565c-2.913-2.911-6.866-4.55-10.993-4.55
+                        c-4.126,0-8.08,1.639-10.992,4.55L4.558,37.284c-6.077,6.075-6.077,15.909,0,21.986l171.138,171.128L4.575,401.505
+                        c-6.074,6.077-6.074,15.911,0,21.986l32.709,32.719c2.911,2.911,6.865,4.55,10.992,4.55c4.127,0,8.08-1.639,10.994-4.55
+                        l171.117-171.12l171.118,171.12c2.913,2.911,6.866,4.55,10.993,4.55c4.128,0,8.081-1.639,10.992-4.55l32.709-32.719
+                        c6.074-6.075,6.074-15.909,0-21.986L285.08,230.397z"/>
+                    </svg>
+                </div>
+                <div class="menu-button" id="menu-button">
+                    <?xml version="1.0" encoding="iso-8859-1"?>
+                    <!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        viewBox="0 0 297 297" style="enable-background:new 0 0 297 297;" xml:space="preserve">
+                    <g>
+                        <g>
+                            <g>
+                                <path d="M280.214,39.211H16.786C7.531,39.211,0,46.742,0,55.997v24.335c0,9.256,7.531,16.787,16.786,16.787h263.428
+                                    c9.255,0,16.786-7.531,16.786-16.787V55.997C297,46.742,289.469,39.211,280.214,39.211z"/>
+                                <path d="M280.214,119.546H16.786C7.531,119.546,0,127.077,0,136.332v24.336c0,9.255,7.531,16.786,16.786,16.786h263.428
+                                    c9.255,0,16.786-7.531,16.786-16.786v-24.336C297,127.077,289.469,119.546,280.214,119.546z"/>
+                                <path d="M280.214,199.881H16.786C7.531,199.881,0,207.411,0,216.668v24.335c0,9.255,7.531,16.786,16.786,16.786h263.428
+                                    c9.255,0,16.786-7.531,16.786-16.786v-24.335C297,207.411,289.469,199.881,280.214,199.881z"/>
+                            </g>
+                        </g>
+                    </g>
+                    </svg>
 
-        <div class="main-content-container">
+                </div>
+                
+            </div>
+            
 
-            <div id="home" class="section"></div>
+            <a href="#home">
+                <p>Home</p>
+            </a>
+            <a href="#skills">
+                <p>Skills</p>
+            </a>
+            <a href="#projects">
+                <p>Projects</p>
+            </a>
+        </header>
 
-            <div id="projects" class="section"></div>
+        <!-- About me  -->
+        <div class="section hero" id="home">
+            
+            <div class="section-inner">
+                <h1>Max Farley</h1>
+                <div class="profile-container">
+                    <img src="Inc/Imgs/NoGlassesHeadShot.jpg" />
+                </div>
+                <p>Hi, my name’s Max. I’m a games programmer mainly interested in Artificial Intelligence & Gameplay programming. I love being presented with challenges and finding the best way to solve them, which is what makes games & coding my greatest passions.</p>
+            </div>
+            <div class="background-img">
+                <img src="Inc/GIFs/beyblade_gif.gif" />
+            </div>
+        </div>
 
-            <div id="about" class="section"></div>
+        <!-- My Skills -->
+        <div class="section" id="skills">
+            <div class="section-inner">
+                <h1>My Skills</h1>
 
+                <h2>Languages:</h2>
+                <div class="skills-row">
+                    <div class="skills-column">
+                        <img src="Inc/Imgs/Icons/c_sharp.png" />
+                        <p>C#</p>
+                    </div>
+                    <div class="skills-column">
+                        <img src="Inc/Imgs/Icons/c_plus_plus.png" />
+                        <p>C++</p>
+                    </div>
+                    <div class="skills-column">
+                        <img src="Inc/Imgs/Icons/JavaScript.png" />
+                        <p>JavaScript</p>
+                    </div>
+                    <div class="skills-column">
+                        <img src="Inc/Imgs/Icons/html.png" />
+                        <p>HTML</p>
+                    </div>
+                    <div class="skills-column">
+                        <img src="Inc/Imgs/Icons/css.png" />
+                        <p>CSS</p>
+                    </div>
+                </div>
+                <!-- <p>C#, C++, HTML, JavaScript, CSS</p> -->
+    
+                <h2>Game Engines:</h2>
+                <div class="skills-row">
+                    <div class="skills-column">
+                        <img src="Inc/Imgs/Icons/unity.png" />
+                        <p>Unity</p>
+                    </div>
+                    <div class="skills-column">
+                        <img src="Inc/Imgs/Icons/UE4.png" />
+                        <p>Unreal Engine 4</p>
+                    </div>
+                </div>
+
+                <!-- <p>Unity, Unreal Engine 4</p> -->
+    
+                <h2>Other:</h2>
+                <div class="skills-row">
+                    <div class="skills-column">
+                        <img src="Inc/Imgs/Icons/GitHub-Mark-Light-120px-plus.png" />
+                        <p>GitHub</p>
+                    </div>
+                    <div class="skills-column">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Bitbucket-blue-logomark-only.svg" />
+                        <p>BitBucket</p>
+                    </div>
+                    <!-- <div class="skills-column">
+                        <img src="Inc/Imgs/Icons/unity.png" />
+                        <p>Agile Methodologies</p>
+                    </div> -->
+                </div>
+                <!-- <p>GitHub, BitBucket, Agile Methodologies</p> -->
+            </div>
+        </div>
+
+        <!-- Hightlighted projects -->
+        <div class="section alternate" id="projects">
+            <div class="section-inner full">
+                <h1>Highlighted Projects:</h1>
+                <div class="projects-row">
+                    <div class="projects-column">
+                        <img class="play-on-hover" src="Inc/Imgs/BeybladeHomeScreen.PNG" />
+                        <div class="hover-overlay">
+                            <div>
+                                <h3>Beyblade Burst - Keep It Spinnin'</h3>
+                                <a href="/Projects/KeepItSpinnin.html"><p>Click Here to learn more</p></a>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <!-- <div class="projects-column">
+                        <img src="https://via.placeholder.com/1920x1080/" />
+                        <div class="hover-overlay">
+                            <div>
+                                <h3>Death Row Records - Hoops</h3>
+                                <a href="/Projects/Hoops.html"><p>Click Here to learn more</p></a>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="projects-column">
+                        <img src="Inc/Imgs/Fey.webp" />
+                        <div class="hover-overlay">
+                            <div>
+                                <h3>Fey</h3>
+                                <a href="/Projects/Fey.html"><p>Click Here to learn more</p></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="projects-column">
+                        <img src="https://via.placeholder.com/1920x1080/" />
+                        <div class="hover-overlay">
+                            <div>
+                                <h3>Ascension</h3>
+                                <a href="/Projects/Ascension.html"><p>Click Here to learn more</p></a>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="projects-column">
+                        <img src="Inc/Imgs/DissertationGameplay_One.PNG" />
+                        <div class="hover-overlay">
+                            <div>
+                                <h3>Dissertation</h3>
+                                <a href="/Projects/Dissertation.html"><p>Click Here to learn more</p></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- More about me -->
+        <div class="section more-about-me">
+            <div class="section-inner">
+                <p>As a programmer and a person, my belief is that you can always improve on what you do, no matter how successful the outcome is. This being particularly true in the rapidly changing tech & games industries. As such I’m always looking to learn new things and thinking about ways I can change what I do in the future to be more efficient or to create a better outcome.</p>
+            </div>
+           
         </div>
 
 
-        <div id="footer"></div>
+        <footer>
+            <p>If you think I'd be a good fit for your team, drop me a line and let's meet.</p>
+            <div class="social-links">
+                <a href="https://twitter.com"><img src="Inc/Imgs/Icons/Twitter.png" /></a>
+                <a href="https://linkedin.com"><img src="Inc/Imgs/Icons/linkedin.png" /></a>
+            </div>
+            <div class="social-links">
+                <p>Email: <a href="mailto:maxwfarley@live.co.uk">maxwfarley@live.co.uk</a></p>
+
+            </div>
+        </footer>
 
 
-        
-
-        <script>
-
-            
-
-            let htmlFiles = [
-                { link: "Inc/HTML/header.html", id: "header" },
-                { link: "Inc/HTML/footer.html", id: "footer" },
-                { link:"Inc/HTML/about.html", id:"about" },
-                { link:"Inc/HTML/home.html", id:"home" },
-                { link:"Inc/HTML/projects.html", id:"projects" },
-            ];
-
-            for(let i = 0; i < htmlFiles.length; i++){
-                let callback = () => {};
-
-                if(i == htmlFiles.length - 1){
-                    callback = () => {
-                        LoadModal();
-                    }
-                }
-                LoadHTMLFromFile(htmlFiles[i].link, htmlFiles[i].id, callback);
-            }
-;
-
-            function LoadHTMLFromFile(link, id, callback){
-                $("#" + id).load(link, callback);
-            }
-        </script>
+        <script src="Inc/JS/homePage.js"></script>
     </body>
 </html>

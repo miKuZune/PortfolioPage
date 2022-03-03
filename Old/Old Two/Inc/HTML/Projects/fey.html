@@ -1,0 +1,74 @@
+<div id="preview">
+    <img src="Inc/Imgs/Fey_Icon.PNG" />
+    <h1>Fey</h1>
+    <p> (University Group Project)</p>
+</div>
+
+<div id="modal-content">
+    <div id="fey" class="modal-content-inner">
+        <h1>Fey</h1>
+        
+        <div id="fey-slideshow" class="slide-show-container">
+            <div class="slide active">
+                <img src="Inc/Imgs/fey_run.gif" />
+            </div>
+            <div class="slide">
+                <img src="Inc/Imgs/fey_snail.gif" />
+            </div>
+            <div class="slide">
+                <img src="Inc/Imgs/Fey.gif" />
+            </div>
+            <div class="slide">
+                <img src="Inc/Imgs/feyGif.gif" />
+            </div>
+            
+            <div class="arrow-container">
+
+                <div onclick="feySlideshow.PrevSlide();" class="arrow prev">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+
+                <div onclick="feySlideshow.NextSlide();" class="arrow next">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                
+            </div>
+        </div>
+        
+        <div class="text-container">
+            <p>
+                In my third year of university our group game project was a 2.5D metroidvania
+                style game we called Fey. Working with a multidisiplinary group we created a 
+                combat system, puzzles & intricate levels for the player to explore & experience
+                the story of the world & the characters.
+            </p>
+            <p>
+                My main responsibility for this project was to create the AI's that would serve as the player's
+                main adversaries. For this I used a state machine so that the AI's could have multiple behaviours
+                & could easily change their behaviours. An Idle state was used to control enemies patrolling areas of
+                the levels. When the player got close to the enemies they would change their state to an agressive behaivour 
+                where they would look to attack the player.
+            </p>
+            <p>
+                I was also responsible for creating the save game system that allowed the player to save the game so they could stop playing
+                & come back to the same point later. As well as helping the other programmers using pair programming to create systems such as
+                the player's movement & debug problems. 
+            </p>
+            <p>
+                I was also responsible for our version control, helping other members of the team to commit their work, and fixing the repository anytime
+                there were conflicts or problems.
+            </p>
+        </div>
+        
+        
+    </div>
+</div>
+
+<script id="script">
+    let feySlideshow = undefined;
+
+    setTimeout(() => {
+        feySlideshow = new Slideshow('fey-slideshow');
+        console.log('hello - fey');
+    }, 250);
+</script>

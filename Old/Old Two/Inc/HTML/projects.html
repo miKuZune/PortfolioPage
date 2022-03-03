@@ -1,0 +1,78 @@
+<h1>Projects</h1>
+<div class="project-outer-container">
+    <div class="project-container" id="project-container"></div>
+</div>
+
+<h1>Technical Demos</h1>
+<div class="project-outer-container">
+    <div class="project-container" id="tech-demo"></div>
+</div>
+
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content" id="modal-content-container">
+        <span class="close">&times;</span>
+        
+    </div>
+
+</div>
+
+<script>
+    
+    
+    let projects = [
+        // {link: "Inc/HTML/Projects/ori.html", modalContentID: "ori"},
+        // {link: "Inc/HTML/Projects/ahri.html", modalContentID: "ahri"},
+        {link: "Inc/HTML/Projects/beyblade.html", modalContentID: "beyblade"},
+        {link: "Inc/HTML/Projects/dissertation.html", modalContentID: "dissertation"},
+        {link: "Inc/HTML/Projects/fey.html", modalContentID: "fey"},
+        // {link: "Inc/HTML/Projects/ascension.html", modalContentID: "ascension"}
+    ];
+
+    let techDemos = [
+        {link: "Inc/HTML/TechDemos/A_Star.html", modalContentID: "A_Star"},
+        {link: "Inc/HTML/TechDemos/Boids.html", modalContentID: "boids"}
+    ];
+
+
+    AddPreviewCards(projects, 'project-container', 'modal-content-container');
+    AddPreviewCards(techDemos, 'tech-demo', 'modal-content-container')
+    
+
+    function AddPreviewCards(listOfFiles, pageContainerID, modalContainerID){
+        let projectContainer = document.getElementById(pageContainerID);
+        let modalContentContainer = document.getElementById(modalContainerID);
+
+        for(let i = 0; i < listOfFiles.length; i++){
+            // Add project preview card
+            let newProjectContainer = document.createElement('div');
+            newProjectContainer.classList.add('project');
+            newProjectContainer.onclick = () => { OpenModal(listOfFiles[i].modalContentID); }
+
+            let projectInnerContainer = document.createElement('div');
+            projectInnerContainer.classList.add('project-inner');
+
+            $(projectInnerContainer).load( listOfFiles[i].link + " #preview");
+
+            newProjectContainer.appendChild(projectInnerContainer);
+            projectContainer.appendChild(newProjectContainer);
+
+            // Add content to the modal
+            let newModalContentContainer = document.createElement('div');
+            $(newModalContentContainer).load( listOfFiles[i].link + " #modal-content");
+
+            modalContentContainer.appendChild(newModalContentContainer);
+
+            // Add the script
+            let scriptContainer = document.createElement('script');
+
+            $(scriptContainer).load(listOfFiles[i].link, "#script");
+            document.body.appendChild(scriptContainer);
+        }
+    }
+
+
+</script>

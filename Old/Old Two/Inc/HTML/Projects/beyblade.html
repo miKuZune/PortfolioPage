@@ -1,0 +1,74 @@
+<div id="preview">
+    <img src="Inc/Imgs/BeybladeIcon.png" />
+    <h1>Beyblade Burst - Keep it Spinnin'</h1>
+    <p> (Professional)</p>
+</div>
+
+<div id="modal-content">
+    <div id="beyblade" class="modal-content-inner">
+        <h1>Beyblade Burst - Keep it Spinnin'</h1>
+        
+        <div id="beyblade-slideshow" class="slide-show-container">
+            <div class="slide active">
+                <img src="Inc/Imgs/beyblade_gif.gif" />
+            </div>
+            <div class="slide">
+                <img src="Inc/Imgs/beyblade_characterSelect_gif.gif" />
+            </div>
+            <div class="slide">
+                <img src="Inc/Imgs/BeybladeVSscreen.PNG" />
+            </div>
+            <div class="slide">
+                <img src="Inc/Imgs/beyblade_gameplay_gif.gif" />
+            </div>
+            <div class="slide">
+                <img src="Inc/Imgs/BeybladeVictoryScreen.PNG" />
+            </div>
+
+            <div class="arrow-container">
+
+                <div onclick="beybladeSlideShow.PrevSlide();" class="arrow prev">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+
+                <div onclick="beybladeSlideShow.NextSlide();" class="arrow next">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                
+            </div>
+        </div>
+
+        <div class="text-container">
+            <div class="link-container">
+                <h3>Link:</h3>
+                <p><a href="https://beyblade.com/game" target="_blank">beyblade.com/game</a></p>
+                <p class="note">(Note: You may end up on the homepage due to localisation re-directs, you should be able to find the game link in the header on the top right)</p>
+            </div>
+            
+            <p>
+                While working at Antoine Lock my first major project was to create a web based
+                game for Beyblade. My role in this project was to build the game itself. The gameplay was designed
+                by the designers at Antoine Lock allowing me to choose the technology to use & build the game. 
+            </p>
+    
+            <p>
+                For this project I chose to use Unity & C#. This was because it allowed me to quickly create builds & 
+                test changes using the Unity editor. This was important as designers often wanted to make small changes
+                after seeing their designs having been built. Working with an IP like Beyblade, we also needed to be able to
+                make changes to ensure the game made sense within the Beyblade universe and there was nothing incorrect in the
+                game that fans would pick up on.
+            </p>
+        </div>
+        
+        
+    </div>
+</div>
+
+<script id="script">
+    let beybladeSlideShow = undefined;
+
+    setTimeout(() => {
+        beybladeSlideShow = new Slideshow('beyblade-slideshow');
+        console.log('hello - beyblade');
+    }, 250);
+</script>

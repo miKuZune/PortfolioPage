@@ -1,0 +1,45 @@
+<div id="preview">
+    <img src="Inc/Imgs/Fey_Icon.PNG" />
+    <h1>A Star Pathfinding</h1>
+    <p> Tech Demo</p>
+</div>
+
+<div id="modal-content">
+    <div id="A_Star" class="modal-content-inner">
+        <h1>A Star Pathfinding</h1>
+        
+        <div id="" class="slide-show-container">
+            <canvas id="pathfindingCanvas"></canvas>
+        </div>
+        
+        <div class="text-container">
+            <p>
+                
+            </p>
+           
+        </div>
+        
+        
+    </div>
+</div>
+
+<script id="script">
+
+    var ManagerInst = undefined;
+    let pathfindingCanvasID = "pathfindingCanvas";
+
+    setTimeout(() => {
+        StartPathfindingDemo(pathfindingCanvasID);
+    }, 1000);
+
+    function StartPathfindingDemo(canvasID){
+        ManagerInst = new Manager();
+
+        // document.documentElement.style.overflow = 'hidden';  // firefox, chrome
+        // document.body.scroll = "no"; // ie only
+        // document.body.style.padding = 0;
+        // document.body.style.margin = 0;
+
+        ManagerInst.Run(canvasID);
+    }
+</script>

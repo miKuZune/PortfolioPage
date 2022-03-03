@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="Max Farley's personal portfolio">
+        <meta name="keywords" content="">
+        <meta name="author" content="Max Farley">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Max Farley</title>
+
+        <link rel="stylesheet" type="text/css" href="Inc/CSS/main.css">
+
+        <script src="Inc/JS/modal.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="Inc/JS/slideshow.js"></script>
+        <script src="https://kit.fontawesome.com/9f2e914f55.js" crossorigin="anonymous"></script>
+
+        <!-- Pathfinding demo -->
+        <script src= "/PortfolioPage/Inc/A_StarPathfinding/Node.js"></script>
+        <script src ="/PortfolioPage/Inc/A_StarPathfinding/Grid.js"></script>
+        <script src = "/PortfolioPage/Inc/A_StarPathfinding/Pathfinding.js"></script>
+        <script src ="/PortfolioPage/Inc/A_StarPathfinding/Manager.js"></script>
+
+        <!--General use library scripts.-->
+        <script src = "/PortfolioPage/Inc/A_StarPathfinding/Lib/Vector2.js"></script>
+    </head>
+
+    <body>
+        <div id="header"></div>
+
+        <div class="main-content-container">
+
+            <div id="home" class="section"></div>
+
+            <div id="projects" class="section"></div>
+
+            <div id="about" class="section"></div>
+
+        </div>
+
+
+        <div id="footer"></div>
+
+
+        
+
+        <script>
+
+            
+
+            let htmlFiles = [
+                { link: "Inc/HTML/header.html", id: "header" },
+                { link: "Inc/HTML/footer.html", id: "footer" },
+                { link:"Inc/HTML/about.html", id:"about" },
+                { link:"Inc/HTML/home.html", id:"home" },
+                { link:"Inc/HTML/projects.html", id:"projects" },
+            ];
+
+            for(let i = 0; i < htmlFiles.length; i++){
+                let callback = () => {};
+
+                if(i == htmlFiles.length - 1){
+                    callback = () => {
+                        LoadModal();
+                    }
+                }
+                LoadHTMLFromFile(htmlFiles[i].link, htmlFiles[i].id, callback);
+            }
+;
+
+            function LoadHTMLFromFile(link, id, callback){
+                $("#" + id).load(link, callback);
+            }
+        </script>
+    </body>
+</html>
