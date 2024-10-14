@@ -107,6 +107,13 @@ header a:hover p{
     margin-top: 0;
 }
 
+.section-inner h3{
+    margin-top:48px;
+    margin-bottom:16px;
+    text-align: center;
+    font-size: 32px;
+}
+
 .section-inner.full{
     max-width: unset;
     margin:auto 32px;
@@ -121,16 +128,17 @@ header a:hover p{
 /* Start Hero styling */
 .section.hero{
     height:calc(100vw * 0.5625);
+    max-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
 
     text-align: center;
     z-index: 2;
+    position: relative;
 }
 
 .section.hero .section-inner{
-    position: absolute;
     z-index: 2;
     width:100%;
 
@@ -140,6 +148,60 @@ header a:hover p{
     background-color: rgba(32, 33, 36, 0.75);
     border-radius: 32px;
 }
+
+.section.hero .hero-info-container{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    width: 100%;
+}
+
+.section.hero .scroll-down{
+    z-index: 2;
+    width:64px;
+    height:64px;
+    position: absolute;
+    bottom: 16px;
+    right:64px;
+
+    display: block;
+    max-width: 1080px;
+    
+
+    background-color: rgba(111, 112, 116, 0.75);
+    border-radius: 8px;
+    margin:0 auto;
+    margin-top:32px;
+    transition:0.25s;
+}
+
+.section.hero .scroll-down:hover{
+    background-color: rgba(157, 233, 237, 0.75);
+    
+}
+
+.section.hero .scroll-down .arrow-container{
+    margin:auto;
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+}
+
+.section.hero .scroll-down .arrow-container p{
+    margin:0;
+}
+
+.section.hero .scroll-down .arrow-container img{
+    width:100%;
+    height: 100%;
+}
+
+.section.hero .hero-link{
+    color:white;
+}
+
 
 .background-img{
     position: absolute;
@@ -152,8 +214,9 @@ header a:hover p{
     display: block;
 }
 
-.background-img img{
+.background-img img, .background-img video{
     width: 100%;
+    max-height: 100vh;
 }
 .profile-container{
     width:256px;
@@ -191,7 +254,7 @@ header a:hover p{
 }
 
 .skills-column img{
-    width:160px;
+    height:100px;
     display: block;
     margin: 0 auto;
 }
@@ -288,6 +351,9 @@ header a:hover p{
     width:100%;
 }
 
+.project-img .section-inner video{
+    width:100%;
+}
 .link-title{
     font-size: 20px;
     margin: 0;
@@ -355,9 +421,19 @@ footer p{
     .background-img{
         position: relative;
     }
+    .background-img video{
+        display: none;
+    }
     .section.hero .section-inner{
         position: relative;
         height: unset;
+    }
+    .section.hero .hero-info-container{
+        position: relative;
+        height: unset;
+    }
+    .section.hero .hero-link{
+        display: none;
     }
     .section.hero{
         display: block;
@@ -423,5 +499,11 @@ footer p{
 
     header a:hover p{
         font-size: 24px;
+    }
+}
+
+@media screen and (orientation:portrait){
+    .section.hero .hero-link{
+        display: none;
     }
 }
